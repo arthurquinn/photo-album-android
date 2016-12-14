@@ -97,8 +97,12 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.mnuRemovePhoto:
+                Photo p = (Photo) photoGridAdapter.getItem(info.position);
+                activeAlbum.removePhoto(p);
+                photoGridAdapter.notifyDataSetChanged();
 
-
+                Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
+                Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
                 return true;
             default:
                 return super.onContextItemSelected(item);

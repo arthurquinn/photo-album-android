@@ -25,6 +25,10 @@ public class Album implements java.io.Serializable {
         this.photoList.add(p);
     }
 
+    public void removePhoto(Photo p){
+        this.photoList.remove(p);
+    }
+
     public List<Photo> getPhotoList(){
         return this.photoList;
     }

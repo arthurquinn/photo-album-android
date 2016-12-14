@@ -57,8 +57,6 @@ public class ImageViewGridAdapter extends BaseAdapter {
             imgView = new ImageView(ctx);
 
             try {
-
-
                 // Get bitmap from photo object
                 Photo photo = photoList.get(position);
                 InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getFileUri());
