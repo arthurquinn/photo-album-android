@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,6 +20,8 @@ import src.androidphotoalbum.models.Photo;
 public class ImageViewGridAdapter extends BaseAdapter {
     private Context ctx;
     private List<Photo> photoList;
+
+    private static final String logCode = "androidPhotoAlbumLog";
 
 
     public ImageViewGridAdapter(Context ctx, List<Photo> photoList)
@@ -46,17 +49,21 @@ public class ImageViewGridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgView;
+        Log.i(logCode, "Getting view");
+
         if (convertView == null)
         {
             // Make the image view
             imgView = new ImageView(ctx);
 
             try {
+
+
                 // Get bitmap from photo object
                 Photo photo = photoList.get(position);
-                Uri imageUri = Uri.parse(photo.getFilePath());
-                InputStream inputStream = ctx.getContentResolver().openInputStream(imageUri);
+                InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getFileUri());
                 Bitmap image = BitmapFactory.decodeStream(inputStream);
+                Log.i(logCode, "Adding photo to grid... " + photo.getFileUri());
 
                 // Create the image view
                 imgView = new ImageView(ctx);
@@ -69,7 +76,7 @@ public class ImageViewGridAdapter extends BaseAdapter {
                 imgView.setLayoutParams(imageLayout);
 
             } catch (FileNotFoundException e){
-
+                Log.i(logCode, "file not found");
             }
         }
         else

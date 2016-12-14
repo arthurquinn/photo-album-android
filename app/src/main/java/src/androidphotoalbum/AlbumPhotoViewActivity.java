@@ -110,7 +110,9 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK){
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
-                activeAlbum.addPhoto(new Photo(imageUri.getPath()));
+                activeAlbum.addPhoto(new Photo(imageUri));
+                Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
+                Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
                 photoGridAdapter.notifyDataSetChanged();
             }
         }
