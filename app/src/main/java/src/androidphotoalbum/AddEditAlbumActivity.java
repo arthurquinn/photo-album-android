@@ -12,16 +12,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import src.androidphotoalbum.models.AlbumListWrapper;
 
 public class AddEditAlbumActivity extends AppCompatActivity {
 
     private EditText txtAlbumName;
+
+    private AlbumListWrapper albumList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_album);
 
+        albumList = (AlbumListWrapper)getIntent().getExtras().get("ALBUM_LIST");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -42,25 +48,23 @@ public class AddEditAlbumActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.mnuSave:
-                if (!txtAlbumName.getText().toString().isEmpty()) {
-                    // TODO: Check to make sure text box isn't empty
-                    String albumName = txtAlbumName.getText().toString();
-                    getIntent().putExtra("ALBUM_NAME", albumName);
-                    setResult(RESULT_OK, getIntent());
-                    finish();
+                if (!txtAlbumName.getText().toString().isEmpty())
+                {
+                    if (albumList.checkDuplicate(txtAlbumName.getText().toString()))
+                    {
+                        Toast.makeText(this,"This album name already exists.",Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        String albumName = txtAlbumName.getText().toString();
+                        getIntent().putExtra("ALBUM_NAME", albumName);
+                        setResult(RESULT_OK, getIntent());
+                        finish();
+                    }
                 }
-                else {
-                    AlertDialog.Builder missingNameAlert = new AlertDialog.Builder(this);
-                    missingNameAlert.setMessage("Album name field is required")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setTitle("Error")
-                            .create();
-                    missingNameAlert.show();
+                else
+                {
+                    Toast.makeText(this,"Album field name is required.",Toast.LENGTH_LONG).show();
                 }
                 return true;
             case R.id.mnuCancel:

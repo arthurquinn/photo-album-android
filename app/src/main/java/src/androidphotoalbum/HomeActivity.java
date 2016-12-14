@@ -20,6 +20,7 @@ import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Album;
 
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -116,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.mnuRename:
                 Album editAlbum = albumListAdapter.getItem(info.position);
                 Intent renameIntent = new Intent(this, AddEditAlbumActivity.class);
-                renameIntent.putExtra("ALBUM", editAlbum);
+                renameIntent.putExtra("ALBUM_LIST", albumList);
                 startActivityForResult(renameIntent, EDIT_ALBUM_CODE);
                 return true;
             case R.id.mnuDelete:
@@ -140,14 +141,13 @@ public class HomeActivity extends AppCompatActivity {
                 Log.i(logCode, oldName);
                 Log.i(logCode, newName);
 
-                // TODO: Add error here if duplicate
                 albumList.editAlbum(oldName, newName);
                 albumListAdapter.notifyDataSetChanged();
+
             }
             else if (requestCode == ADD_ALBUM_CODE) {
                 String newName = data.getStringExtra("ALBUM_NAME");
 
-                // TODO: Check here to make sure new name is not a duplicate
                 albumList.addAlbum(new Album(newName));
                 albumListAdapter.notifyDataSetChanged();
             }
@@ -156,6 +156,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void createAlbum() {
         Intent intent = new Intent(this, AddEditAlbumActivity.class);
+        intent.putExtra("ALBUM_LIST", albumList);
         startActivityForResult(intent, ADD_ALBUM_CODE);
     }
 

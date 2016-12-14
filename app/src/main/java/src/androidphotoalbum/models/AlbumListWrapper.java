@@ -23,9 +23,18 @@ public class AlbumListWrapper implements java.io.Serializable {
         this.albumList.remove(position);
     }
 
+    public boolean checkDuplicate(String name)
+    {
+        for (Album album : albumList)
+        {
+            if (album.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
     public boolean editAlbum(String oldName, String newName)
     {
-        // TODO: Add check to make sure no duplicates
         for (Album album : albumList){
             if (oldName.equals(album.getName())){
                 album.setName(newName);

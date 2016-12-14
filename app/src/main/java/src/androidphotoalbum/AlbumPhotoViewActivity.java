@@ -30,7 +30,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     private static final String logCode = "androidPhotoAlbumLog";
     private Album activeAlbum;
 
-    private GridView gridPhotoView;
+   // private GridView gridPhotoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
+        //gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
 
         FloatingActionButton btnAddPhoto = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +76,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                     ImageView imgView = new ImageView(this);
                     imgView.setImageBitmap(image);
 
-                    gridPhotoView.addView(imgView);
+                    //gridPhotoView.addView(imgView);
                 } catch (FileNotFoundException e) {
                     // TODO: Print error
                 }
