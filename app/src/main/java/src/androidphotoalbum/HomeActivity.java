@@ -1,5 +1,6 @@
 package src.androidphotoalbum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,9 @@ import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Album;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private static final int ADD_ALBUM_CODE = 1;
+    private static final int EDIT_ALBUM_CODE = 2;
 
     private ListView lstAlbums;
     private AlbumListWrapper albumList;
@@ -58,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -101,7 +105,33 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void createAlbum() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == EDIT_ALBUM_CODE) {
+                String editName = data.getStringExtra("ALBUM_NAME");
 
+                // TODO: Check here to make sure edited name is not a duplicate
+                // TODO: Implement edit code
+                // originalAlbum.setName(editName);
+                albumListAdapter.notifyDataSetChanged();
+            }
+            else if (requestCode == ADD_ALBUM_CODE) {
+                String newName = data.getStringExtra("ALBUM_NAME");
+
+                // TODO: Check here to make sure new name is not a duplicate
+                albumList.addAlbum(new Album(newName));
+                albumListAdapter.notifyDataSetChanged();
+            }
+        }
     }
+
+    private void createAlbum() {
+        Intent intent = new Intent(this, AddEditAlbumActivity.class);
+        startActivityForResult(intent, ADD_ALBUM_CODE);
+    }
+
+
 }
