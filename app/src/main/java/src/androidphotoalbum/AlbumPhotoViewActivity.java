@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -21,7 +22,10 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import src.androidphotoalbum.adapters.ImageViewGridAdapter;
 import src.androidphotoalbum.models.Album;
 
 public class AlbumPhotoViewActivity extends AppCompatActivity {
@@ -30,7 +34,9 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     private static final String logCode = "androidPhotoAlbumLog";
     private Album activeAlbum;
 
-   // private GridView gridPhotoView;
+    private List<Bitmap> photos;
+    private ImageViewGridAdapter photoGridAdapter;
+    private GridView gridPhotoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,17 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
+        photos = new ArrayList<Bitmap>();
+        photoGridAdapter = new ImageViewGridAdapter(this, photos);
+
+        gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
+        gridPhotoView.setAdapter(photoGridAdapter);
+        gridPhotoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(logCode, "Image clicked...");
+            }
+        });
 
         FloatingActionButton btnAddPhoto = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +72,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
+
+
     }
 
     @Override
@@ -72,11 +90,12 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 try {
                     InputStream inputStream = getContentResolver().openInputStream(imageUri);
                     Bitmap image = BitmapFactory.decodeStream(inputStream);
-
-                    ImageView imgView = new ImageView(this);
-                    imgView.setImageBitmap(image);
-
-                    //gridPhotoView.addView(imgView);
+                    photos.add(image);
+                    Log.i(logCode, "Length: " + photoGridAdapter.getCount());
+                    for (int i = 0; i < photoGridAdapter.getCount(); i++){
+                        Log.i(logCode, "Entry: " + photoGridAdapter.getItem(i).toString());
+                    }
+                    photoGridAdapter.notifyDataSetChanged();
                 } catch (FileNotFoundException e) {
                     // TODO: Print error
                 }
