@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album album = albumListAdapter.getItem(position);
                 Intent albumPhotoViewIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
-                albumPhotoViewIntent.putExtra("ALBUM", album);
+                albumPhotoViewIntent.putExtra("ACTIVE_ALBUM", album);
                 startActivity(albumPhotoViewIntent);
             }
         });

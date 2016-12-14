@@ -1,6 +1,6 @@
 package src.androidphotoalbum.models;
 
-public class TagValuePair {
+public class TagValuePair implements java.io.Serializable {
 
     private String key;
     private String value;

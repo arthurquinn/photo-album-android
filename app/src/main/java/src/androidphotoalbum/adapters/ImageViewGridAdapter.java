@@ -59,9 +59,9 @@ public class ImageViewGridAdapter extends BaseAdapter {
             try {
                 // Get bitmap from photo object
                 Photo photo = photoList.get(position);
-                InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getFileUri());
+                InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getUri());
                 Bitmap image = BitmapFactory.decodeStream(inputStream);
-                Log.i(logCode, "Adding photo to grid... " + photo.getFileUri());
+                Log.i(logCode, "Adding photo to grid... " + photo.getUri().toString());
 
                 // Create the image view
                 imgView = new ImageView(ctx);

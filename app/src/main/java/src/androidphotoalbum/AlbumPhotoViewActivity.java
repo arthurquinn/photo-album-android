@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -44,7 +45,13 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activeAlbum = (Album) getIntent().getExtras().get("ALBUM");
+        Log.i(logCode, getIntent().toString());
+        Log.i(logCode, getIntent().getExtras().toString());
+
+
+        if (activeAlbum == null)
+            activeAlbum = (Album) getIntent().getExtras().get("ACTIVE_ALBUM");
+
         Log.i(logCode, "Launching Album Photo View Activity...");
         Log.i(logCode, String.format("Opening album: %s", activeAlbum.getName()));
 
@@ -62,9 +69,11 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         gridPhotoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(logCode, "Image clicked...");
+                displayPhoto((Photo)photoGridAdapter.getItem(position));
             }
         });
+
+        registerForContextMenu(gridPhotoView);
 
         FloatingActionButton btnAddPhoto = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -73,12 +82,16 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
-
-        registerForContextMenu(gridPhotoView);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -114,7 +127,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK){
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
-                activeAlbum.addPhoto(new Photo(imageUri));
+                activeAlbum.addPhoto(new Photo(imageUri.toString()));
                 Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
                 Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
                 photoGridAdapter.notifyDataSetChanged();
@@ -135,5 +148,12 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         photoPickerIntent.setDataAndType(picData, "image/*");
         startActivityForResult(photoPickerIntent, PHOTO_PICKER_CODE);
 
+    }
+
+    private void displayPhoto(Photo photo) {
+        Intent displayPhotoIntent = new Intent(getBaseContext(), PhotoDisplayActivity.class);
+        displayPhotoIntent.putExtra("ACTIVE_ALBUM", activeAlbum);
+        displayPhotoIntent.putExtra("ACTIVE_PHOTO", photo);
+        startActivity(displayPhotoIntent);
     }
 }

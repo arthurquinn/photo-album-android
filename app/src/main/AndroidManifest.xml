@@ -14,7 +14,8 @@
         <activity
             android:name=".HomeActivity"
             android:label="Albums"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,8 +28,15 @@
         <activity
             android:name=".AlbumPhotoViewActivity"
             android:label="@string/title_activity_album_photo_view"
+            android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".HomeActivity"/>
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".PhotoDisplayActivity"
+            android:label="@string/title_activity_photo_display"
+            android:parentActivityName=".AlbumPhotoViewActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -7,20 +7,20 @@ import java.util.List;
 
 public class Photo implements java.io.Serializable {
 
-    private Uri fileUri;
+    private String uriString;
     private List<TagValuePair> tagList;
 
-    public Photo(Uri uri){
-        this.fileUri = uri;
+    public Photo(String uriString){
+        this.uriString = uriString;
         this.tagList = new ArrayList<TagValuePair>();
     }
 
-    public void setFileUri(Uri uri){
-        this.fileUri = uri;
+    public void setUriString(String uriString){
+        this.uriString = uriString;
     }
 
-    public Uri getFileUri(){
-        return this.fileUri;
+    public Uri getUri(){
+        return Uri.parse(this.uriString);
     }
 
     public void addTag(TagValuePair t){
