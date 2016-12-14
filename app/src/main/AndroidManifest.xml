@@ -27,7 +27,8 @@
         <activity
             android:name=".AlbumPhotoViewActivity"
             android:label="@string/title_activity_album_photo_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".HomeActivity"/>
     </application>
 
 </manifest>

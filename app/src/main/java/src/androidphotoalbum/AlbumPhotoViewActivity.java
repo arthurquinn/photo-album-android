@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -26,9 +27,12 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         Log.i(logCode, "Launching Album Photo View Activity...");
         Log.i(logCode, String.format("Opening album: %s", activeAlbum.getName()));
 
+        setTitle(String.format("%s Photos", activeAlbum.getName()));
+
         setContentView(R.layout.activity_album_photo_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton btnAddPhoto = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +41,11 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     private void addPhoto(){
