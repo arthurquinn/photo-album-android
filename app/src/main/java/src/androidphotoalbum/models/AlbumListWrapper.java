@@ -23,7 +23,15 @@ public class AlbumListWrapper implements java.io.Serializable {
         this.albumList.remove(position);
     }
 
-    public Album getAlbum(int index){
-        return (Album)this.albumList.get(index);
+    public boolean editAlbum(String oldName, String newName)
+    {
+        // TODO: Add check to make sure no duplicates
+        for (Album album : albumList){
+            if (oldName.equals(album.getName())){
+                album.setName(newName);
+                return true;
+            }
+        }
+        return false;
     }
 }

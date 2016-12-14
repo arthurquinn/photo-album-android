@@ -45,9 +45,8 @@ public class AddEditAlbumActivity extends AppCompatActivity {
                 if (!txtAlbumName.getText().toString().isEmpty()) {
                     // TODO: Check to make sure text box isn't empty
                     String albumName = txtAlbumName.getText().toString();
-                    Intent albumNameIntent = new Intent();
-                    albumNameIntent.putExtra("ALBUM_NAME", albumName);
-                    setResult(RESULT_OK, albumNameIntent);
+                    getIntent().putExtra("ALBUM_NAME", albumName);
+                    setResult(RESULT_OK, getIntent());
                     finish();
                 }
                 else {

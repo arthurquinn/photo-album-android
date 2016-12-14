@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,7 +19,12 @@ import android.widget.ListView;
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Album;
 
+import android.util.Log;
+
+
 public class HomeActivity extends AppCompatActivity {
+
+    private static final String logCode = "androidPhotoAlbumLog";
 
     private static final int ADD_ALBUM_CODE = 1;
     private static final int EDIT_ALBUM_CODE = 2;
@@ -56,6 +62,19 @@ public class HomeActivity extends AppCompatActivity {
                 createAlbum();
             }
         });
+
+
+
+        lstAlbums.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Album album = albumListAdapter.getItem(position);
+                Intent albumPhotoViewIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
+                albumPhotoViewIntent.putExtra("ALBUM", album);
+                startActivity(albumPhotoViewIntent);
+            }
+        });
+
+
     }
 
     @Override
@@ -83,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         // If view is album list view then inflate the album context menu
         if (v.getId() == R.id.lstAlbums) {
             AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
-            menu.setHeaderTitle(albumList.getAlbum(info.position).toString());
+            menu.setHeaderTitle(albumListAdapter.getItem(info.position).toString());
             getMenuInflater().inflate(R.menu.context_menu_album_list, menu);
         }
     }
@@ -95,6 +114,10 @@ public class HomeActivity extends AppCompatActivity {
         // Actions on context menu item selection
         switch(item.getItemId()) {
             case R.id.mnuRename:
+                Album editAlbum = albumListAdapter.getItem(info.position);
+                Intent renameIntent = new Intent(this, AddEditAlbumActivity.class);
+                renameIntent.putExtra("ALBUM", editAlbum);
+                startActivityForResult(renameIntent, EDIT_ALBUM_CODE);
                 return true;
             case R.id.mnuDelete:
                 albumList.removeAlbum(info.position);
@@ -111,11 +134,14 @@ public class HomeActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK)
         {
             if (requestCode == EDIT_ALBUM_CODE) {
-                String editName = data.getStringExtra("ALBUM_NAME");
+                String newName = data.getStringExtra("ALBUM_NAME");
+                String oldName = ((Album)data.getExtras().get("ALBUM")).getName();
 
-                // TODO: Check here to make sure edited name is not a duplicate
-                // TODO: Implement edit code
-                // originalAlbum.setName(editName);
+                Log.i(logCode, oldName);
+                Log.i(logCode, newName);
+
+                // TODO: Add error here if duplicate
+                albumList.editAlbum(oldName, newName);
                 albumListAdapter.notifyDataSetChanged();
             }
             else if (requestCode == ADD_ALBUM_CODE) {
