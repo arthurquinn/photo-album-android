@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId())
         {
-            case R.id.btnRunSearch :
+            case R.id.mnuSearch:
                 Intent searchPhotosIntent = new Intent(getBaseContext(), SearchPhotosActivity.class);
                 startActivity(searchPhotosIntent);
                 return true;

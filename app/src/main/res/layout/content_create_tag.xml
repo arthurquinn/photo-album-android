@@ -19,22 +19,52 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="12dp"
+        android:weightSum="1">
 
-        <EditText
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/txtType"
-            android:hint="Enter tag type here" />
+            android:layout_height="37dp">
 
-        <EditText
+            <TextView
+                android:text="Tag Type:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:layout_weight="0.12"
+                android:padding="10dp"/>
+
+            <Spinner
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:id="@+id/spnType"
+                android:layout_weight="0.34"
+                android:entries="@array/tagSpinnerItems"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/txtValue"
-            android:hint="Enter tag value here" />
+            android:layout_height="46dp">
+
+            <TextView
+                android:text="Tag Value:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:layout_weight="1"
+                android:padding="10dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/txtValue"
+                android:layout_weight="2.67" />
+        </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

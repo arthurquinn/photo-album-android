@@ -56,6 +56,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SearchPhotosActivity"
+            android:parentActivityName=".HomeActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_search_photos"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

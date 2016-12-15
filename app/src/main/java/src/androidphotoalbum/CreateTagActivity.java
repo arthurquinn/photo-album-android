@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -19,8 +21,10 @@ import src.androidphotoalbum.state.ApplicationInstance;
 
 public class CreateTagActivity extends AppCompatActivity {
 
-    private EditText txtType;
+    private Spinner spnType;
     private EditText txtValue;
+
+    private String selectedType;
 
     private List<TagValuePair> tagList;
 
@@ -34,8 +38,8 @@ public class CreateTagActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        txtType = (EditText)findViewById(R.id.txtType);
-        txtValue = (EditText)findViewById(R.id.txtValue);
+        spnType = (Spinner)findViewById(R.id.spnType);
+        txtValue = (EditText) findViewById(R.id.txtValue);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class CreateTagActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.mnuCreateTagSave:
-                if (txtType.getText().toString().isEmpty() || txtValue.getText().toString().isEmpty()){
+                if (spnType.getSelectedItem().toString().isEmpty() || txtValue.getText().toString().isEmpty()){
                     Toast.makeText(this, "Tag type and value are required", Toast.LENGTH_LONG).show();
                 }
                 else
@@ -56,7 +60,7 @@ public class CreateTagActivity extends AppCompatActivity {
                     boolean exists = false;
                     for (TagValuePair tag : tagList)
                     {
-                        if (tag.toString().equals(String.format("[Type: %s | Value: %s]", txtType.getText().toString(), txtValue.getText().toString())))
+                        if (tag.toString().equals(String.format("[Type: %s | Value: %s]", spnType.getSelectedItem().toString(), txtValue.getText().toString())))
                         {
                             Toast.makeText(this, "This tag already exists.", Toast.LENGTH_LONG).show();
                             exists = true;
@@ -65,7 +69,7 @@ public class CreateTagActivity extends AppCompatActivity {
                     if (!exists)
                     {
                         Intent createTagIntent = new Intent(this, ManageTagsActivity.class);
-                        createTagIntent.putExtra("TYPE", txtType.getText().toString());
+                        createTagIntent.putExtra("TYPE", spnType.getSelectedItem().toString());
                         createTagIntent.putExtra("VALUE", txtValue.getText().toString());
                         setResult(RESULT_OK, createTagIntent);
                         finish();

@@ -10,4 +10,8 @@
     <string name="title_activity_create_tag">Create Tag</string>
     <string name="title_activity_slideshow">SlideshowActivity</string>
     <string name="title_activity_search_photos">Search Photos</string>
+    <string-array name="tagSpinnerItems">
+        <item>Person</item>
+        <item>Location</item>
+    </string-array>
 </resources>

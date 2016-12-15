@@ -25,30 +25,53 @@
             android:text="Search by Tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
             android:gravity="center" />
 
-        <EditText
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/txtSearchType"
-            android:hint="Tag Type"/>
+            android:layout_height="47dp">
 
-        <EditText
+            <TextView
+                android:text="Tag Type:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"/>
+
+            <Spinner
+                android:layout_width="241dp"
+                android:layout_height="match_parent"
+                android:id="@+id/spnSearchType"
+                android:layout_weight="0.58"
+                android:entries="@array/tagSpinnerItems"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/txtSearchValue"
-            android:hint="Tag Value"/>
+            android:layout_height="47dp">
+
+            <TextView
+                android:text="Tag Value:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/txtSearchValue"
+                android:layout_weight="2.57" />
+        </LinearLayout>
 
         <TextView
             android:text="Results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2"
             android:gravity="center" />
 
         <GridView

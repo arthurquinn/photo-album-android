@@ -16,7 +16,7 @@ public class TagValuePair implements java.io.Serializable {
     }
 
     public String getValue(){
-        return this.getValue();
+        return this.value;
     }
 
 
