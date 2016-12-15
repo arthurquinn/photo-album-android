@@ -13,9 +13,13 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import src.androidphotoalbum.models.Album;
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Photo;
+import src.androidphotoalbum.models.TagValuePair;
 import src.androidphotoalbum.state.ApplicationInstance;
 
 public class SearchPhotosActivity extends AppCompatActivity {
@@ -57,14 +61,20 @@ public class SearchPhotosActivity extends AppCompatActivity {
         }
     }
 
-    private void runSearch(String type, String value){
+    private List<Photo> runSearch(String type, String value){
         AlbumListWrapper albumListWrapper = ApplicationInstance.getInstance().getAlbumListWrapper();
+
+        List<Photo> searchList = new ArrayList<Photo>();
 
         for (Album a : albumListWrapper.getAlbumList()){
             for (Photo p : a.getPhotoList()){
-                // TODO: iterate and search photo tags
+                for (TagValuePair t : p.getTags())
+                {
+                    if (t.getKey().contains(type) || t.getValue().contains(value))
+                        searchList.add(p);
+                }
             }
         }
-
+        return searchList;
     }
 }
