@@ -22,6 +22,6 @@ public class TagValuePair implements java.io.Serializable {
 
     @Override
     public String toString(){
-        return String.format("[Type: %s | Value: %s]", this.key, this.value);
+        return String.format("Type: %s | Value: %s", this.key, this.value);
     }
 }

@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +43,10 @@ public class PhotoDisplayActivity extends AppCompatActivity {
         // Get the active album/photo
         activeAlbum = ApplicationInstance.getInstance().getActiveAlbum();
         Photo photo = ApplicationInstance.getInstance().getActivePhoto();
+
+        // Set up label
+        TextView lblFilename = (TextView)findViewById(R.id.lblFilenameDisplay);
+        lblFilename.setText(photo.getFilename());
 
         // Set up image view
         ImageView imgView = (ImageView) findViewById(R.id.imgViewPhotoDisplay);
@@ -91,6 +98,7 @@ public class PhotoDisplayActivity extends AppCompatActivity {
         for (TagValuePair tag : ApplicationInstance.getInstance().getActivePhoto().getTags()){
             TextView tagView = new TextView(getBaseContext());
             tagView.setText(tag.toString());
+            tagView.setGravity(Gravity.CENTER);
             tagLayout.addView(tagView);
         }
     }
