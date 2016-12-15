@@ -1,35 +1,19 @@
 package src.androidphotoalbum;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-import src.androidphotoalbum.R;
 import src.androidphotoalbum.models.Photo;
 import src.androidphotoalbum.models.TagValuePair;
 import src.androidphotoalbum.state.ApplicationInstance;
@@ -68,7 +52,6 @@ public class ManageTagsActivity extends AppCompatActivity {
             Bitmap image = activePhoto.loadBitmap(this);
             imgViewManageTags.setImageBitmap(image);
         } catch (Exception e){
-            Log.i(logCode, "Exception message: " + e.getMessage());
         }
 
         FloatingActionButton btnAddTag = (FloatingActionButton) findViewById(R.id.btnAddTag);

@@ -1,15 +1,10 @@
 package src.androidphotoalbum.state;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
-import android.view.ContextMenu;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -73,14 +68,9 @@ public class ApplicationInstance {
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(albumListWrapper);
 
-            for (Album a : albumListWrapper.getAlbumList()){
-                Log.i(logCode, "Saved album: " + a.getName());
-            }
 
-            Log.i(logCode, "Save successful...");
             /// fileOutputStream.close();
         } catch (Exception e) {
-            Log.i(logCode, "Save not successful... : " + e.getMessage());
         }
     }
 
@@ -92,13 +82,8 @@ public class ApplicationInstance {
             objectInputStream = new ObjectInputStream(fileInputStream);
             this.albumListWrapper = (AlbumListWrapper)objectInputStream.readObject();
 
-            for (Album a : albumListWrapper.getAlbumList()){
-                Log.i(logCode, "Album found: " + a.getName());
-            }
 
-            Log.i(logCode, "Successfully loaded data...");
         } catch (Exception e) {
-            Log.i(logCode, "Data not loaded... : " + e.getMessage());
         }
     }
 
@@ -108,9 +93,7 @@ public class ApplicationInstance {
             final Bitmap img = BitmapFactory.decodeStream(inputStream);
             final FileOutputStream fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
             img.compress(Bitmap.CompressFormat.PNG, 90, fos);
-            Log.i(logCode, "Image saved successfully...");
         } catch (Exception e) {
-            Log.i(logCode, "Exception thrown in transfer... : " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -1,35 +1,20 @@
 package src.androidphotoalbum;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.test.ApplicationTestCase;
-import android.text.LoginFilter;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-
-import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import src.androidphotoalbum.adapters.ImageViewGridAdapter;
 import src.androidphotoalbum.models.Album;
@@ -113,7 +98,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.mnuRemovePhoto:
                 p = (Photo) photoGridAdapter.getItem(info.position);
-                Log.i(logCode, "Removing at position " + info.position + "...");
                 activeAlbum.removePhoto(p);
                 photoGridAdapter.notifyDataSetChanged();
                 ApplicationInstance.getInstance().save(this);
@@ -144,7 +128,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
             else if (requestCode == MOVE_PHOTO_CODE){
                 Photo p = ApplicationInstance.getInstance().getActivePhoto();
                 String moveToAlbumName = data.getStringExtra("MOVE_TO_ALBUM_NAME");
-                Log.i(logCode, "Received " + moveToAlbumName + "...");
                 albumListWrapper.movePhotoToAlbum(p, activeAlbum, moveToAlbumName);
                 photoGridAdapter.notifyDataSetChanged();
                 ApplicationInstance.getInstance().save(this);

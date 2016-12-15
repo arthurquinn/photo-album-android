@@ -3,7 +3,6 @@ package src.androidphotoalbum;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -18,11 +17,8 @@ import android.widget.ListView;
 
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Album;
-import src.androidphotoalbum.models.Photo;
 import src.androidphotoalbum.state.ApplicationInstance;
 
-import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -50,19 +46,14 @@ public class HomeActivity extends AppCompatActivity {
 
         File saveFile = new File(getFilesDir(), "usr.dat");
         if (!saveFile.exists()){
-            Log.i(logCode, "Instantiating file...");
             ApplicationInstance.instantiate(this);
         } else {
-            Log.i(logCode, "User data found...");
         }
         ApplicationInstance.getInstance().load(this);
 
 
         albumList = ApplicationInstance.getInstance().getAlbumListWrapper();
 
-        for (Album a : albumList.getAlbumList()){
-            Log.i(logCode, "Home Screen received: " + a.getName());
-        }
 
         albumListAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_list_item_1, albumList.getAlbumList());
 
@@ -86,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album album = albumListAdapter.getItem(position);
                 Intent albumPhotoViewIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
-                Log.i(logCode, "Sending " + album.getName() + "...");
                 ApplicationInstance.getInstance().setActiveAlbum(album);
                 startActivity(albumPhotoViewIntent);
             }
