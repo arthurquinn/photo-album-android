@@ -17,9 +17,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="1">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:text="Search by Tags"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/txtSearchType"
             android:hint="Tag Type"/>
 
         <EditText
@@ -41,24 +41,21 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/txtSearchValue"
             android:hint="Tag Value"/>
 
-        <Button
-            android:text="Add Tag To Search"
+        <TextView
+            android:text="Results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnAddTagToSearch" />
+            android:id="@+id/textView2"
+            android:gravity="center" />
 
-        <ListView
+        <GridView
             android:layout_width="match_parent"
-            android:layout_height="269dp"
-            android:layout_weight="0.92" />
+            android:layout_height="match_parent"
+            android:id="@+id/gridViewSearchResults"
+            android:numColumns="3"/>
 
-        <Button
-            android:text="Execute Search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnExecuteSearch" />
     </LinearLayout>
 </RelativeLayout>
