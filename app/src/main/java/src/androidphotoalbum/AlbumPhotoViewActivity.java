@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,8 +60,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         });
         photoGridAdapter.notifyDataSetChanged();
 
-
-
         registerForContextMenu(gridPhotoView);
 
         FloatingActionButton btnAddPhoto = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
@@ -70,6 +69,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
+
+        Log.i(logCode, "Photos in album: " + activeAlbum.getPhotoList().size());
     }
 
     @Override
@@ -124,6 +125,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 photoGridAdapter.notifyDataSetChanged();
                 photoGridAdapter.notifyDataSetInvalidated();
                 activeAlbum.addPhoto(newPhoto);
+                ApplicationInstance.getInstance().save(this);
             }
             else if (requestCode == MOVE_PHOTO_CODE){
                 Photo p = ApplicationInstance.getInstance().getActivePhoto();

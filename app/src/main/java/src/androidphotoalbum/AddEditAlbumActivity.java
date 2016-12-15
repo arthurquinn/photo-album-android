@@ -1,5 +1,6 @@
 package src.androidphotoalbum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,8 +53,9 @@ public class AddEditAlbumActivity extends AppCompatActivity {
                     else
                     {
                         String albumName = txtAlbumName.getText().toString();
-                        getIntent().putExtra("ALBUM_NAME", albumName);
-                        setResult(RESULT_OK, getIntent());
+                        Intent saveAlbumNameChangesIntent = new Intent();
+                        saveAlbumNameChangesIntent.putExtra("ALBUM_NAME", albumName);
+                        setResult(RESULT_OK, saveAlbumNameChangesIntent);
                         finish();
                     }
                 }

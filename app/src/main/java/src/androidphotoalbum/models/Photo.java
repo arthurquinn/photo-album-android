@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Photo implements java.io.Serializable {
-    private static final long serialVersionUID = 676098297609856790L;
+    private static final long serialVersionUID = 676098239879856790L;
 
     private static final String IMAGE_NAME_FORMAT = "image_%s";
     private static final String logCode = "androidPhotoAlbumLog";
@@ -45,6 +45,7 @@ public class Photo implements java.io.Serializable {
         try{
             InputStream inputStream = ctx.openFileInput(getFilename());
             Bitmap img = BitmapFactory.decodeStream(inputStream);
+            Log.i(logCode, "Loaded from " + getFilename() + "...");
             return img;
         } catch (Exception e) {
             e.printStackTrace();

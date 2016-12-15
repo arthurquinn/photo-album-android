@@ -47,7 +47,6 @@ public class HomeActivity extends AppCompatActivity {
         File saveFile = new File(getFilesDir(), "usr.dat");
         if (!saveFile.exists()){
             ApplicationInstance.instantiate(this);
-        } else {
         }
         ApplicationInstance.getInstance().load(this);
 
@@ -148,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
         {
             if (requestCode == EDIT_ALBUM_CODE) {
                 String newName = data.getStringExtra("ALBUM_NAME");
-                String oldName = ((Album)data.getExtras().get("ALBUM")).getName();
+                String oldName = ApplicationInstance.getInstance().getActiveAlbum().getName();
 
                 albumList.editAlbum(oldName, newName);
                 albumListAdapter.notifyDataSetChanged();
@@ -166,7 +165,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void createAlbum() {
         Intent intent = new Intent(this, AddEditAlbumActivity.class);
-        intent.putExtra("ALBUM_LIST", albumList);
         startActivityForResult(intent, ADD_ALBUM_CODE);
     }
 

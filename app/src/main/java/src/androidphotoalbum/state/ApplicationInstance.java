@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,8 +32,6 @@ public class ApplicationInstance {
 
     public static void instantiate(Context ctx){
         instance = new ApplicationInstance();
-        instance.getAlbumListWrapper().addAlbum(new Album("Meteora"));
-        instance.getAlbumListWrapper().addAlbum(new Album("Minutes to Midnight"));
         instance.save(ctx);
     }
 
@@ -92,6 +91,7 @@ public class ApplicationInstance {
             InputStream inputStream = ctx.getContentResolver().openInputStream(uri);
             final Bitmap img = BitmapFactory.decodeStream(inputStream);
             final FileOutputStream fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
+            Log.i(logCode, "Saved to " + filename + "...");
             img.compress(Bitmap.CompressFormat.PNG, 90, fos);
         } catch (Exception e) {
             e.printStackTrace();
