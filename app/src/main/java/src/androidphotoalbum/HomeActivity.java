@@ -25,8 +25,6 @@ import java.io.File;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String logCode = "androidPhotoAlbumLog";
-
     private static final int ADD_ALBUM_CODE = 1;
     private static final int EDIT_ALBUM_CODE = 2;
 
@@ -50,17 +48,12 @@ public class HomeActivity extends AppCompatActivity {
         }
         ApplicationInstance.getInstance().load(this);
 
-
         albumList = ApplicationInstance.getInstance().getAlbumListWrapper();
-
-
         albumListAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_list_item_1, albumList.getAlbumList());
-
         lstAlbums.setAdapter(albumListAdapter);
 
         // Register album list view for context menu
         registerForContextMenu(lstAlbums);
-
 
         FloatingActionButton btnCreate = (FloatingActionButton) findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +62,6 @@ public class HomeActivity extends AppCompatActivity {
                 createAlbum();
             }
         });
-
-
 
         lstAlbums.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

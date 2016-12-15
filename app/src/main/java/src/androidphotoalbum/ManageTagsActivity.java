@@ -21,7 +21,6 @@ import src.androidphotoalbum.state.ApplicationInstance;
 public class ManageTagsActivity extends AppCompatActivity {
 
     private static final int CREATE_TAG_CODE = 1;
-    private static final String logCode = "androidPhotoAlbumLog";
     private Photo activePhoto;
 
     private ImageView imgViewManageTags;

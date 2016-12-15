@@ -15,7 +15,6 @@ public class Photo implements java.io.Serializable {
     private static final long serialVersionUID = 676098239879856790L;
 
     private static final String IMAGE_NAME_FORMAT = "image_%s";
-    private static final String logCode = "androidPhotoAlbumLog";
 
     private String uniqueId;
     private List<TagValuePair> tagList;
@@ -45,7 +44,6 @@ public class Photo implements java.io.Serializable {
         try{
             InputStream inputStream = ctx.openFileInput(getFilename());
             Bitmap img = BitmapFactory.decodeStream(inputStream);
-            Log.i(logCode, "Loaded from " + getFilename() + "...");
             return img;
         } catch (Exception e) {
             e.printStackTrace();

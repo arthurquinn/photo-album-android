@@ -17,8 +17,6 @@ import src.androidphotoalbum.state.ApplicationInstance;
 
 public class SlideshowActivity extends AppCompatActivity {
 
-    private static final String logCode = "androidPhotoAlbumLog";
-
     private TextView lblSlideshowNum;
     private ImageView imgViewSlideshow;
 

@@ -22,8 +22,6 @@ import src.androidphotoalbum.state.ApplicationInstance;
 
 public class PhotoDisplayActivity extends AppCompatActivity {
 
-    private final String logCode = "androidPhotoAlbumLog";
-
     private static final int MANAGE_TAGS_CODE = 1;
     private Album activeAlbum;
 

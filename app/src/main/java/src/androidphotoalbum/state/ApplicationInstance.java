@@ -20,7 +20,6 @@ public class ApplicationInstance {
 
     private static ApplicationInstance instance;
 
-    private static final String logCode = "androidPhotoAlbumLog";
     private AlbumListWrapper albumListWrapper;
     private Album activeAlbum;
     private Photo activePhoto;
@@ -91,7 +90,6 @@ public class ApplicationInstance {
             InputStream inputStream = ctx.getContentResolver().openInputStream(uri);
             final Bitmap img = BitmapFactory.decodeStream(inputStream);
             final FileOutputStream fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
-            Log.i(logCode, "Saved to " + filename + "...");
             img.compress(Bitmap.CompressFormat.PNG, 90, fos);
         } catch (Exception e) {
             e.printStackTrace();

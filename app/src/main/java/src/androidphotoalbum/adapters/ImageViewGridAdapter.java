@@ -26,9 +26,6 @@ public class ImageViewGridAdapter extends BaseAdapter {
     Context ctx;
     List<Photo> photoList;
 
-    String logCode = "androidPhotoAlbumLog";
-
-
     public ImageViewGridAdapter(Context ctx, List<Photo> photoList)
     {
         this.ctx = ctx;

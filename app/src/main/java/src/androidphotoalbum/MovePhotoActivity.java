@@ -21,9 +21,6 @@ import src.androidphotoalbum.state.ApplicationInstance;
 
 public class MovePhotoActivity extends AppCompatActivity {
 
-    private final String logCode = "androidPhotoAlbumLog";
-    private final String photoDebugCode = "photoDebug";
-
     private ListView lstAlbumsMove;
     private List<Album> availableAlbums;
     private ArrayAdapter<Album> availableAlbumsAdapter;

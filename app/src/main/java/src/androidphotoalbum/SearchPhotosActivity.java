@@ -22,8 +22,6 @@ import src.androidphotoalbum.state.ApplicationInstance;
 
 public class SearchPhotosActivity extends AppCompatActivity {
 
-    private static final String logCode = "androidPhotoAlbumLog";
-
     private List<Photo> searchResults;
     private GridView searchResultsGrid;
     private ImageViewGridAdapter searchResultsAdapter;

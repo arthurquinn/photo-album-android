@@ -20,8 +20,6 @@ public class CreateTagActivity extends AppCompatActivity {
     private Spinner spnType;
     private EditText txtValue;
 
-    private String selectedType;
-
     private List<TagValuePair> tagList;
 
     @Override

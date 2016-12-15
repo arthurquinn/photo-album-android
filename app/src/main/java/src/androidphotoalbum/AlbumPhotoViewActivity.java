@@ -27,7 +27,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
 
     private final int MOVE_PHOTO_CODE = 2;
     private static final int PHOTO_PICKER_CODE = 1;
-    private static final String logCode = "androidPhotoAlbumLog";
 
     private Album activeAlbum;
     private AlbumListWrapper albumListWrapper;
@@ -69,8 +68,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
-
-        Log.i(logCode, "Photos in album: " + activeAlbum.getPhotoList().size());
     }
 
     @Override
