@@ -37,5 +37,10 @@ public class Album implements java.io.Serializable {
     public String toString(){
         return this.name;
     }
+
+    @Override
+    public boolean equals(Object o){
+        return o instanceof Album && ((Album)o).getName().equals(name);
+    }
 }
 

@@ -40,6 +40,7 @@
         <activity
             android:name=".MovePhotoActivity"
             android:label="@string/title_activity_move_photo"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

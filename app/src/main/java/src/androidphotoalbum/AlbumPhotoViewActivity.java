@@ -29,6 +29,7 @@ import java.util.List;
 
 import src.androidphotoalbum.adapters.ImageViewGridAdapter;
 import src.androidphotoalbum.models.Album;
+import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Photo;
 
 public class AlbumPhotoViewActivity extends AppCompatActivity {
@@ -36,8 +37,10 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     private final int MOVE_PHOTO_CODE = 2;
     private static final int PHOTO_PICKER_CODE = 1;
     private static final String logCode = "androidPhotoAlbumLog";
+    private static final String photoDebug = "photoDebug";
 
     private Album activeAlbum;
+    private AlbumListWrapper albumListWrapper;
 
     private ImageViewGridAdapter photoGridAdapter;
     private GridView gridPhotoView;
@@ -52,6 +55,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
 
         if (activeAlbum == null)
             activeAlbum = (Album) getIntent().getExtras().get("ACTIVE_ALBUM");
+        if (albumListWrapper == null)
+            albumListWrapper = (AlbumListWrapper) getIntent().getExtras().get("ALBUM_LIST_WRAPPER");
 
         Log.i(logCode, "Launching Album Photo View Activity...");
         Log.i(logCode, String.format("Opening album: %s", activeAlbum.getName()));
@@ -120,9 +125,11 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 return true;
             case R.id.mnuMovePhoto:
                 p = (Photo) photoGridAdapter.getItem(info.position);
-
+                Log.i(photoDebug, "Album photo view activity is sending: " + p.toString());
                 Intent movePhotoIntent = new Intent(this, MovePhotoActivity.class);
-                movePhotoIntent.putExtra("EXCLUDE_ALBUM_NAME", activeAlbum.getName());
+                movePhotoIntent.putExtra("EXCLUDE_ALBUM", activeAlbum);
+                movePhotoIntent.putExtra("ALBUM_LIST_WRAPPER", albumListWrapper);
+                movePhotoIntent.putExtra("PHOTO", p);
                 startActivityForResult(movePhotoIntent, MOVE_PHOTO_CODE);
             default:
                 return super.onContextItemSelected(item);
@@ -140,7 +147,20 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 photoGridAdapter.notifyDataSetChanged();
             }
             else if (requestCode == MOVE_PHOTO_CODE){
-                Log.i(logCode, "Going to move photo...");
+                Photo p = (Photo)data.getExtras().get("PHOTO");
+                Album moveToAlbum = (Album)data.getExtras().get("MOVE_TO_ALBUM");
+                Log.i(logCode, "Source size: " + activeAlbum.getPhotoList().size());
+                Log.i(logCode, "Target size: " + moveToAlbum.getPhotoList().size());
+
+                for (Photo ph : activeAlbum.getPhotoList()){
+                    Log.i(logCode, "Photo ToString: " + ph.toString());
+                }
+                Log.i(photoDebug, "Move photo activity received:  " + p.toString());
+                activeAlbum.removePhoto(p);
+                moveToAlbum.addPhoto(p);
+                Log.i(logCode, "Source size: " + activeAlbum.getPhotoList().size());
+                Log.i(logCode, "Target size: " + moveToAlbum.getPhotoList().size());
+                photoGridAdapter.notifyDataSetChanged();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

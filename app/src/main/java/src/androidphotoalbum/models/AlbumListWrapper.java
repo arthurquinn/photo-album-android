@@ -27,8 +27,7 @@ public class AlbumListWrapper implements java.io.Serializable {
         this.albumList.remove(position);
     }
 
-    public boolean checkDuplicate(String name)
-    {
+    public boolean checkDuplicate(String name) {
         for (Album album : albumList)
         {
             if (album.getName().equals(name))
@@ -37,8 +36,7 @@ public class AlbumListWrapper implements java.io.Serializable {
         return false;
     }
 
-    public boolean editAlbum(String oldName, String newName)
-    {
+    public boolean editAlbum(String oldName, String newName) {
         for (Album album : albumList){
             if (oldName.equals(album.getName())){
                 album.setName(newName);
@@ -46,5 +44,10 @@ public class AlbumListWrapper implements java.io.Serializable {
             }
         }
         return false;
+    }
+
+    public void movePhotoToAlbum(Photo p, Album source, Album target) {
+        source.removePhoto(p);
+        target.addPhoto(p);
     }
 }

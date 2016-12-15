@@ -1,26 +1,42 @@
 package src.androidphotoalbum;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import src.androidphotoalbum.models.Album;
 import src.androidphotoalbum.models.AlbumListWrapper;
+import src.androidphotoalbum.models.Photo;
 
 public class MovePhotoActivity extends AppCompatActivity {
 
+    private final String logCode = "androidPhotoAlbumLog";
+    private final String photoDebugCode = "photoDebug";
+
     private ListView lstAlbumsMove;
+    private List<Album> availableAlbums;
+    private ArrayAdapter<Album> availableAlbumsAdapter;
+
+    private Photo p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,30 +46,52 @@ public class MovePhotoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         lstAlbumsMove = (ListView) findViewById(R.id.lstAlbumsMove);
 
+        List<Album> allAlbums = ((AlbumListWrapper)getIntent().getExtras().get("ALBUM_LIST_WRAPPER")).getAlbumList();
+        final Album excludeAlbum = (Album)getIntent().getExtras().get("EXCLUDE_ALBUM");
+        availableAlbums = new ArrayList<Album>(allAlbums);
+        availableAlbums.remove(excludeAlbum);
+
+        availableAlbumsAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_list_item_1, availableAlbums);
+        lstAlbumsMove.setAdapter(availableAlbumsAdapter);
+
+
+        // Set up image view
+        try{
+            p = (Photo)getIntent().getExtras().get("PHOTO");
+
+            Log.i(photoDebugCode, "Move photo activity received: " + p.toString());
+
+            ImageView imgView = (ImageView)findViewById(R.id.imgViewMovePhoto);
+            InputStream inputStream = getContentResolver().openInputStream(p.getUri());
+            Bitmap image = BitmapFactory.decodeStream(inputStream);
+            imgView.setImageBitmap(image);
+            imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imgView.setPadding(8, 8, 8, 8);
+        } catch (FileNotFoundException e){
+            Log.i(logCode, "file not found");
+        }
+
+
+        lstAlbumsMove.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Album a = (Album)availableAlbumsAdapter.getItem(position);
+                Intent moveToIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
+                moveToIntent.putExtra("PHOTO", p);
+                Log.i(photoDebugCode, "Move to photo activity is sending: " + p.toString());
+                moveToIntent.putExtra("MOVE_TO_ALBUM", a);
+                setResult(RESULT_OK, moveToIntent);
+                finish();
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_move_photo, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if(v.getId() == R.id.lstAlbumsMove)
-        {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            getMenuInflater().inflate(R.menu.context_menu_album_list, menu);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
     }
 
     @Override

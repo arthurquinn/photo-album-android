@@ -4,5 +4,5 @@
     <string name="title_activity_add_edit_album">AddEditAlbumActivity</string>
     <string name="title_activity_album_photo_view">AlbumPhotoViewActivity</string>
     <string name="title_activity_photo_display">Photo Display</string>
-    <string name="title_activity_move_photo">MovePhotoActivity</string>
+    <string name="title_activity_move_photo">Move Photos</string>
 </resources>

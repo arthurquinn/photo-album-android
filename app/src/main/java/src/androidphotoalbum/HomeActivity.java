@@ -71,6 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                 Album album = albumListAdapter.getItem(position);
                 Intent albumPhotoViewIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
                 albumPhotoViewIntent.putExtra("ACTIVE_ALBUM", album);
+                albumPhotoViewIntent.putExtra("ALBUM_LIST_WRAPPER", albumList);
                 startActivity(albumPhotoViewIntent);
             }
         });
