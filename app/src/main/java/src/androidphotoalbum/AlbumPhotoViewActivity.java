@@ -33,6 +33,7 @@ import src.androidphotoalbum.models.Photo;
 
 public class AlbumPhotoViewActivity extends AppCompatActivity {
 
+    private final int MOVE_PHOTO_CODE = 2;
     private static final int PHOTO_PICKER_CODE = 1;
     private static final String logCode = "androidPhotoAlbumLog";
 
@@ -107,16 +108,22 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
+        Photo p;
         switch (item.getItemId()){
             case R.id.mnuRemovePhoto:
-                Photo p = (Photo) photoGridAdapter.getItem(info.position);
+                p = (Photo) photoGridAdapter.getItem(info.position);
                 activeAlbum.removePhoto(p);
                 photoGridAdapter.notifyDataSetChanged();
 
                 Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
                 Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
                 return true;
+            case R.id.mnuMovePhoto:
+                p = (Photo) photoGridAdapter.getItem(info.position);
+
+                Intent movePhotoIntent = new Intent(this, MovePhotoActivity.class);
+                movePhotoIntent.putExtra("EXCLUDE_ALBUM_NAME", activeAlbum.getName());
+                startActivityForResult(movePhotoIntent, MOVE_PHOTO_CODE);
             default:
                 return super.onContextItemSelected(item);
         }
@@ -131,6 +138,9 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
                 Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
                 photoGridAdapter.notifyDataSetChanged();
+            }
+            else if (requestCode == MOVE_PHOTO_CODE){
+                Log.i(logCode, "Going to move photo...");
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
