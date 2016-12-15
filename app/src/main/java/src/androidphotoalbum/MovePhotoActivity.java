@@ -77,7 +77,8 @@ public class MovePhotoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album a = (Album)availableAlbumsAdapter.getItem(position);
                 Intent moveToIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
-                moveToIntent.putExtra("MOVE_TO_ALBUM", a);
+                moveToIntent.putExtra("MOVE_TO_ALBUM_NAME", a.getName());
+                Log.i(logCode, "Sending " + a.getName() + "...");
                 setResult(RESULT_OK, moveToIntent);
                 finish();
             }

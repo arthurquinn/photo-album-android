@@ -46,8 +46,14 @@ public class AlbumListWrapper implements java.io.Serializable {
         return false;
     }
 
-    public void movePhotoToAlbum(Photo p, Album source, Album target) {
+    public boolean movePhotoToAlbum(Photo p, Album source, String targetName) {
         source.removePhoto(p);
-        target.addPhoto(p);
+        for (Album album : albumList){
+            if (album.getName().equals(targetName)){
+                album.addPhoto(p);
+                return true;
+            }
+        }
+        return false;
     }
 }

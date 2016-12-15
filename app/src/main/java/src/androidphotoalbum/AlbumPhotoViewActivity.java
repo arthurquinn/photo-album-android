@@ -137,8 +137,9 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
             }
             else if (requestCode == MOVE_PHOTO_CODE){
                 Photo p = ApplicationInstance.getInstance().getActivePhoto();
-                Album moveToAlbum = (Album)data.getExtras().get("MOVE_TO_ALBUM");
-                albumListWrapper.movePhotoToAlbum(p, activeAlbum, moveToAlbum);
+                String moveToAlbumName = data.getStringExtra("MOVE_TO_ALBUM_NAME");
+                Log.i(logCode, "Received " + moveToAlbumName + "...");
+                albumListWrapper.movePhotoToAlbum(p, activeAlbum, moveToAlbumName);
                 photoGridAdapter.notifyDataSetChanged();
             }
         }
