@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class AlbumListWrapper implements java.io.Serializable {
+    private static final long serialVersionUID = 6760982934587815490L;
 
-    private static final long serialVersionUID = 6760982129067815490L;
-
-    private List<Album> albumList;
-
-    public static AlbumListWrapper instance;
+    private ArrayList<Album> albumList;
 
     public AlbumListWrapper(){
         this.albumList = new ArrayList<Album>();

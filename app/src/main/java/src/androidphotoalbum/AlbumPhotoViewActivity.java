@@ -2,11 +2,13 @@ package src.androidphotoalbum;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
@@ -81,8 +83,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
-
-        Log.i(logCode, "Album photo view loading " + activeAlbum.getPhotoList().size() + " photos");
     }
 
     @Override
@@ -100,7 +100,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.gridPhotoView){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-
             getMenuInflater().inflate(R.menu.context_menu_album_photo_view, menu);
         }
     }
@@ -114,6 +113,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 p = (Photo) photoGridAdapter.getItem(info.position);
                 activeAlbum.removePhoto(p);
                 photoGridAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
                 return true;
             case R.id.mnuMovePhoto:
                 p = (Photo) photoGridAdapter.getItem(info.position);
@@ -131,9 +131,12 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK){
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
-                this.grantUriPermission(this.getPackageName(), imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Log.i(logCode, "Beginning transfer...");
+                Bitmap bm = ApplicationInstance.getInstance().transferImageToInternalStorage(this, imageUri);
+                Log.i(logCode, "Bitmap object: " + bm.toString());
                 activeAlbum.addPhoto(new Photo(imageUri.toString()));
                 photoGridAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
             }
             else if (requestCode == MOVE_PHOTO_CODE){
                 Photo p = ApplicationInstance.getInstance().getActivePhoto();
@@ -141,6 +144,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 Log.i(logCode, "Received " + moveToAlbumName + "...");
                 albumListWrapper.movePhotoToAlbum(p, activeAlbum, moveToAlbumName);
                 photoGridAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.androidphotoalbum.models.Photo;
+import src.androidphotoalbum.state.ApplicationInstance;
 
 public class ImageViewGridAdapter extends BaseAdapter {
     private Context ctx;
@@ -58,7 +59,6 @@ public class ImageViewGridAdapter extends BaseAdapter {
             try {
                 // Get bitmap from photo object
                 Photo photo = photoList.get(position);
-                Log.i(logCode, "URI: " + photo.getUri().toString());
                 InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getUri());
                 Bitmap image = BitmapFactory.decodeStream(inputStream);
 
@@ -73,7 +73,7 @@ public class ImageViewGridAdapter extends BaseAdapter {
                 imgView.setLayoutParams(imageLayout);
 
             } catch (Exception e){
-                Log.i(logCode, "Exception messagE: " + e.getMessage());
+                e.printStackTrace();
             }
         }
         else

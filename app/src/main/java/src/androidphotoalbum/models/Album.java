@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Album implements java.io.Serializable {
+    private static final long serialVersionUID = 6760487129087815490L;
 
     private String name;
-    private List<Photo> photoList;
+    private ArrayList<Photo> photoList;
 
     public Album(String name) {
         this.name = name;

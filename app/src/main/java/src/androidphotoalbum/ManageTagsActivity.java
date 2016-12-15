@@ -118,6 +118,7 @@ public class ManageTagsActivity extends AppCompatActivity {
             case R.id.mnuRemoveTag:
                 activePhoto.removeTag(lstTagAdapter.getItem(info.position));
                 lstTagAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
             default:
                 return super.onContextItemSelected(item);
         }
@@ -132,6 +133,7 @@ public class ManageTagsActivity extends AppCompatActivity {
 
                 activePhoto.addTag(new TagValuePair(type, value));
                 lstTagAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

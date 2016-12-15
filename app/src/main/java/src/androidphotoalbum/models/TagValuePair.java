@@ -1,6 +1,7 @@
 package src.androidphotoalbum.models;
 
 public class TagValuePair implements java.io.Serializable {
+    private static final long serialVersionUID = 3759875684587815490L;
 
     private String key;
     private String value;

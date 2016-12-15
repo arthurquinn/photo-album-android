@@ -18,10 +18,13 @@ import android.widget.ListView;
 
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Album;
+import src.androidphotoalbum.models.Photo;
 import src.androidphotoalbum.state.ApplicationInstance;
 
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -45,9 +48,21 @@ public class HomeActivity extends AppCompatActivity {
 
         lstAlbums = (ListView) findViewById(R.id.lstAlbums);
 
+        File saveFile = new File(getFilesDir(), "usr.dat");
+        if (!saveFile.exists()){
+            Log.i(logCode, "Instantiating file...");
+            ApplicationInstance.instantiate(this);
+        } else {
+            Log.i(logCode, "User data found...");
+        }
+        ApplicationInstance.getInstance().load(this);
 
-        ApplicationInstance.instantiateTest();
+
         albumList = ApplicationInstance.getInstance().getAlbumListWrapper();
+
+        for (Album a : albumList.getAlbumList()){
+            Log.i(logCode, "Home Screen received: " + a.getName());
+        }
 
         albumListAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_list_item_1, albumList.getAlbumList());
 
@@ -71,12 +86,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album album = albumListAdapter.getItem(position);
                 Intent albumPhotoViewIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
+                Log.i(logCode, "Sending " + album.getName() + "...");
                 ApplicationInstance.getInstance().setActiveAlbum(album);
                 startActivity(albumPhotoViewIntent);
             }
         });
-
-        Log.i(logCode, "Album List Wrapper on home activity screen: " + albumList.toString());
     }
 
     @Override
@@ -92,8 +106,6 @@ public class HomeActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -104,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
         // If view is album list view then inflate the album context menu
         if (v.getId() == R.id.lstAlbums) {
             AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
-            menu.setHeaderTitle(albumListAdapter.getItem(info.position).toString());
+            // menu.setHeaderTitle(albumListAdapter.getItem(info.position).toString());
             getMenuInflater().inflate(R.menu.context_menu_album_list, menu);
         }
     }
@@ -124,6 +136,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.mnuDelete:
                 albumList.removeAlbum(info.position);
                 albumListAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -141,13 +154,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 albumList.editAlbum(oldName, newName);
                 albumListAdapter.notifyDataSetChanged();
-
+                ApplicationInstance.getInstance().save(this);
             }
             else if (requestCode == ADD_ALBUM_CODE) {
                 String newName = data.getStringExtra("ALBUM_NAME");
 
                 albumList.addAlbum(new Album(newName));
                 albumListAdapter.notifyDataSetChanged();
+                ApplicationInstance.getInstance().save(this);
             }
         }
     }

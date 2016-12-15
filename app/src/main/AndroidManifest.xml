@@ -53,6 +53,10 @@
         <activity
             android:name=".SlideshowActivity"
             android:label="@string/title_activity_slideshow"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchPhotosActivity"
+            android:label="@string/title_activity_search_photos"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

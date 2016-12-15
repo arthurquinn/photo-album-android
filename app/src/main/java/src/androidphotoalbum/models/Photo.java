@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Photo implements java.io.Serializable {
+    private static final long serialVersionUID = 676098297609856790L;
 
     private String uniqueId;
     private String uriString;
