@@ -39,6 +39,7 @@ public class ManageTagsActivity extends AppCompatActivity {
     private static final String logCode = "androidPhotoAlbumLog";
     private Photo activePhoto;
 
+    private ImageView imgViewManageTags;
     private ArrayAdapter<TagValuePair> lstTagAdapter;
     private ListView lstTags;
 
@@ -61,21 +62,14 @@ public class ManageTagsActivity extends AppCompatActivity {
         // Register list view for context menu
         registerForContextMenu(lstTags);
 
-        /*
+        imgViewManageTags = (ImageView)findViewById(R.id.imgViewManageTags);
         try {
-            // Set up image view
-            ImageView imgView = (ImageView) findViewById(R.id.imgViewPhotoDisplay);
             InputStream inputStream = getContentResolver().openInputStream(activePhoto.getUri());
-            Log.i(logCode, "Image URI: " + activePhoto.getUri().toString());
             Bitmap image = BitmapFactory.decodeStream(inputStream);
-            imgView.setImageBitmap(image);
-            imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imgView.setPadding(8, 8, 8, 8);
-
-        } catch (FileNotFoundException e) {
-            Log.i(logCode, e.getMessage());
+            imgViewManageTags.setImageBitmap(image);
+        } catch (Exception e){
+            Log.i(logCode, "Exception message: " + e.getMessage());
         }
-        */
 
         FloatingActionButton btnAddTag = (FloatingActionButton) findViewById(R.id.btnAddTag);
         btnAddTag.setOnClickListener(new View.OnClickListener() {

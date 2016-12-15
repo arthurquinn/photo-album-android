@@ -26,7 +26,8 @@
             android:layout_height="126dp"
             app:srcCompat="@android:drawable/btn_dialog"
             android:id="@+id/imgViewManageTags"
-            android:layout_weight="0.76" />
+            android:layout_weight="0.76"
+            android:padding="8dp"/>
 
         <ListView
             android:layout_width="match_parent"

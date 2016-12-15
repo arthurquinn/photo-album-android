@@ -66,10 +66,10 @@ public class ImageViewGridAdapter extends BaseAdapter {
                 imgView = new ImageView(ctx);
                 imgView.setImageBitmap(image);
                 ViewGroup.LayoutParams imageLayout = new ViewGroup.LayoutParams(250, 250);
-                imageLayout.width = 250;
-                imageLayout.height = 250;
+                imageLayout.width = 225;
+                imageLayout.height = 225;
                 imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgView.setPadding(8, 8, 8, 8);
+                imgView.setPadding(16, 16, 16, 16);
                 imgView.setLayoutParams(imageLayout);
 
             } catch (Exception e){
