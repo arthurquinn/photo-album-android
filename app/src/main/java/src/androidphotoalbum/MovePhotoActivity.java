@@ -58,17 +58,12 @@ public class MovePhotoActivity extends AppCompatActivity {
         lstAlbumsMove.setAdapter(availableAlbumsAdapter);
 
         // Set up image view
-        try{
-            p = ApplicationInstance.getInstance().getActivePhoto();
-            ImageView imgView = (ImageView)findViewById(R.id.imgViewMovePhoto);
-            InputStream inputStream = getContentResolver().openInputStream(p.getUri());
-            Bitmap image = BitmapFactory.decodeStream(inputStream);
-            imgView.setImageBitmap(image);
-            imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imgView.setPadding(8, 8, 8, 8);
-        } catch (FileNotFoundException e){
-            Log.i(logCode, "file not found");
-        }
+        p = ApplicationInstance.getInstance().getActivePhoto();
+        ImageView imgView = (ImageView)findViewById(R.id.imgViewMovePhoto);
+        Bitmap image = p.loadBitmap(this);
+        imgView.setImageBitmap(image);
+        imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imgView.setPadding(8, 8, 8, 8);
 
         lstAlbumsMove.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

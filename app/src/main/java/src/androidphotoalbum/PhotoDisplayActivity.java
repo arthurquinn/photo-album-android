@@ -53,18 +53,12 @@ public class PhotoDisplayActivity extends AppCompatActivity {
         activeAlbum = ApplicationInstance.getInstance().getActiveAlbum();
         Photo photo = ApplicationInstance.getInstance().getActivePhoto();
 
-        try {
-            // Set up image view
-            ImageView imgView = (ImageView) findViewById(R.id.imgViewPhotoDisplay);
-            InputStream inputStream = getContentResolver().openInputStream(photo.getUri());
-            Bitmap image = BitmapFactory.decodeStream(inputStream);
-            imgView.setImageBitmap(image);
-            imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imgView.setPadding(8, 8, 8, 8);
-
-        } catch (FileNotFoundException e) {
-            Log.i(logCode, e.getMessage());
-        }
+        // Set up image view
+        ImageView imgView = (ImageView) findViewById(R.id.imgViewPhotoDisplay);
+        Bitmap image = photo.loadBitmap(this);
+        imgView.setImageBitmap(image);
+        imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imgView.setPadding(8, 8, 8, 8);
 
         loadTags();
     }

@@ -102,34 +102,18 @@ public class ApplicationInstance {
         }
     }
 
-    public Bitmap transferImageToInternalStorage(Context ctx, Uri uri){
+    public void transferImageToInternalStorage(Context ctx, Uri uri){
         try{
             File imgFile = new File(uri.getPath());
-            Log.i(logCode, "Image Uri: " + uri.toString());
-            Log.i(logCode, "Image name: " + imgFile.getName());
-            Log.i(logCode, "Image path: " + imgFile.getAbsolutePath());
-            Log.i(logCode, "Image ext: " + extractExtension(imgFile.getPath()));
-
-            // Create a BitMap object of the image to be worked with
             InputStream inputStream = ctx.getContentResolver().openInputStream(uri);
             final Bitmap img = BitmapFactory.decodeStream(inputStream);
-
-            // The openfileOutput() method creates a file on the phone/internal storage in the context of your application
             final FileOutputStream fos = ctx.openFileOutput(imgFile.getName(), Context.MODE_PRIVATE);
-
             img.compress(Bitmap.CompressFormat.PNG, 90, fos);
-
-            InputStream test = ctx.openFileInput(imgFile.getName());
-            Bitmap opened = BitmapFactory.decodeStream(test);
-
-            Log.i(logCode, "Returning opened file...");
-            return opened;
-
+            Log.i(logCode, "Image saved successfully...");
         } catch (Exception e) {
             Log.i(logCode, "Exception thrown in transer... : " + e.getMessage());
             e.printStackTrace();
         }
-        return null;
     }
 
     private static String extractExtension(String filepath){

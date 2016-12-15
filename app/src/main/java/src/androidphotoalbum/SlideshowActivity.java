@@ -53,7 +53,7 @@ public class SlideshowActivity extends AppCompatActivity {
         Button btnNext = (Button)findViewById(R.id.btnNext);
         Button btnPrevious = (Button)findViewById(R.id.btnPrevious);
 
-        setSlideshowImageView(photoList.get(index).getUri());
+        setSlideshowImageView(photoList.get(index));
         setSlideshowLabel(index);
 
 
@@ -61,7 +61,7 @@ public class SlideshowActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (index < photoList.size() - 1){
-                    setSlideshowImageView(photoList.get(++index).getUri());
+                    setSlideshowImageView(photoList.get(++index));
                     setSlideshowLabel(index);
                 }
             }
@@ -71,7 +71,7 @@ public class SlideshowActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (index > 0){
-                    setSlideshowImageView(photoList.get(--index).getUri());
+                    setSlideshowImageView(photoList.get(--index));
                     setSlideshowLabel(index);
                 }
             }
@@ -95,14 +95,9 @@ public class SlideshowActivity extends AppCompatActivity {
         }
     }
 
-    private void setSlideshowImageView(Uri uri){
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-            Bitmap image = BitmapFactory.decodeStream(inputStream);
-            imgViewSlideshow.setImageBitmap(image);
-        } catch (Exception e){
-            Log.i(logCode, "Exception message: " + e.getMessage());
-        }
+    private void setSlideshowImageView(Photo p){
+        Bitmap image = p.loadBitmap(this);
+        imgViewSlideshow.setImageBitmap(image);
     }
 
     private void setSlideshowLabel(int index){

@@ -132,9 +132,10 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
                 Log.i(logCode, "Beginning transfer...");
-                Bitmap bm = ApplicationInstance.getInstance().transferImageToInternalStorage(this, imageUri);
-                Log.i(logCode, "Bitmap object: " + bm.toString());
-                activeAlbum.addPhoto(new Photo(imageUri.toString()));
+                ApplicationInstance.getInstance().transferImageToInternalStorage(this, imageUri);
+
+                File imgFile = new File(imageUri.getPath());
+                activeAlbum.addPhoto(new Photo(imgFile.getName()));
                 photoGridAdapter.notifyDataSetChanged();
                 ApplicationInstance.getInstance().save(this);
             }

@@ -59,8 +59,9 @@ public class ImageViewGridAdapter extends BaseAdapter {
             try {
                 // Get bitmap from photo object
                 Photo photo = photoList.get(position);
-                InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getUri());
-                Bitmap image = BitmapFactory.decodeStream(inputStream);
+                Bitmap image = photo.loadBitmap(ctx);
+
+                Log.i(logCode, "Bitmap : " + image.toString() + " loaded!");
 
                 // Create the image view
                 imgView = new ImageView(ctx);
@@ -69,10 +70,11 @@ public class ImageViewGridAdapter extends BaseAdapter {
                 imageLayout.width = 225;
                 imageLayout.height = 225;
                 imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgView.setPadding(16, 16, 16, 16);
+                imgView.setPadding(12, 12, 12, 12);
                 imgView.setLayoutParams(imageLayout);
 
             } catch (Exception e){
+                Log.i(logCode, "Failed to load image... : " + e.getMessage());
                 e.printStackTrace();
             }
         }

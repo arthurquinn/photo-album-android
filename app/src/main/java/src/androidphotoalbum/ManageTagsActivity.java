@@ -65,8 +65,7 @@ public class ManageTagsActivity extends AppCompatActivity {
 
         imgViewManageTags = (ImageView)findViewById(R.id.imgViewManageTags);
         try {
-            InputStream inputStream = getContentResolver().openInputStream(activePhoto.getUri());
-            Bitmap image = BitmapFactory.decodeStream(inputStream);
+            Bitmap image = activePhoto.loadBitmap(this);
             imgViewManageTags.setImageBitmap(image);
         } catch (Exception e){
             Log.i(logCode, "Exception message: " + e.getMessage());
