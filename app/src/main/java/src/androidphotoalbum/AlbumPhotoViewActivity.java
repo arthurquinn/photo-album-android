@@ -15,6 +15,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.test.ApplicationTestCase;
+import android.text.LoginFilter;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,8 +64,6 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         photoGridAdapter = new ImageViewGridAdapter(this, activeAlbum.getPhotoList());
-        photoGridAdapter.notifyDataSetChanged();
-
         gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
         gridPhotoView.setAdapter(photoGridAdapter);
         gridPhotoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,6 +72,9 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 displayPhoto((Photo)photoGridAdapter.getItem(position));
             }
         });
+        photoGridAdapter.notifyDataSetChanged();
+
+
 
         registerForContextMenu(gridPhotoView);
 
@@ -111,6 +113,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.mnuRemovePhoto:
                 p = (Photo) photoGridAdapter.getItem(info.position);
+                Log.i(logCode, "Removing at position " + info.position + "...");
                 activeAlbum.removePhoto(p);
                 photoGridAdapter.notifyDataSetChanged();
                 ApplicationInstance.getInstance().save(this);
@@ -130,16 +133,13 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
             if (requestCode == PHOTO_PICKER_CODE){
+                // Create photo and save image to internal storage
+                Photo newPhoto = new Photo();
                 Uri imageUri = data.getData();
-                Log.i(logCode, "Beginning transfer...");
-                ApplicationInstance.getInstance().transferImageToInternalStorage(this, imageUri);
-
-                File imgFile = new File(imageUri.getPath());
-                activeAlbum.addPhoto(new Photo(imgFile.getName()));
-                Log.i(logCode, "Added image: name: " + imgFile.getName());
+                ApplicationInstance.getInstance().transferImageToInternalStorage(this, newPhoto.getFilename(), imageUri);
                 photoGridAdapter.notifyDataSetChanged();
                 photoGridAdapter.notifyDataSetInvalidated();
-                ApplicationInstance.getInstance().save(this);
+                activeAlbum.addPhoto(newPhoto);
             }
             else if (requestCode == MOVE_PHOTO_CODE){
                 Photo p = ApplicationInstance.getInstance().getActivePhoto();

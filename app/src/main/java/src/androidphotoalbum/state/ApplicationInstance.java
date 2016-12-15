@@ -102,16 +102,15 @@ public class ApplicationInstance {
         }
     }
 
-    public void transferImageToInternalStorage(Context ctx, Uri uri){
+    public void transferImageToInternalStorage(Context ctx, String filename, Uri uri){
         try{
-            File imgFile = new File(uri.getPath());
             InputStream inputStream = ctx.getContentResolver().openInputStream(uri);
             final Bitmap img = BitmapFactory.decodeStream(inputStream);
-            final FileOutputStream fos = ctx.openFileOutput(imgFile.getName(), Context.MODE_PRIVATE);
+            final FileOutputStream fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
             img.compress(Bitmap.CompressFormat.PNG, 90, fos);
             Log.i(logCode, "Image saved successfully...");
         } catch (Exception e) {
-            Log.i(logCode, "Exception thrown in transer... : " + e.getMessage());
+            Log.i(logCode, "Exception thrown in transfer... : " + e.getMessage());
             e.printStackTrace();
         }
     }

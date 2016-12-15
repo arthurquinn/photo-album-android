@@ -5,24 +5,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.androidphotoalbum.R;
 import src.androidphotoalbum.models.Photo;
 import src.androidphotoalbum.state.ApplicationInstance;
 
 public class ImageViewGridAdapter extends BaseAdapter {
-    private Context ctx;
-    private List<Photo> photoList;
+    Context ctx;
+    List<Photo> photoList;
 
-    private static final String logCode = "androidPhotoAlbumLog";
+    String logCode = "androidPhotoAlbumLog";
 
 
     public ImageViewGridAdapter(Context ctx, List<Photo> photoList)
@@ -49,39 +53,26 @@ public class ImageViewGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imgView;
-
-        if (convertView == null)
-        {
-            // Make the image view
-            imgView = new ImageView(ctx);
-
-            try {
-                // Get bitmap from photo object
-                Photo photo = photoList.get(position);
-                Bitmap image = photo.loadBitmap(ctx);
-
-                Log.i(logCode, "Bitmap : " + image.toString() + " loaded!");
-                Log.i(logCode, "Setting image at position " + position);
-                // Create the image view
-                imgView = new ImageView(ctx);
-                imgView.setImageBitmap(image);
-                ViewGroup.LayoutParams imageLayout = new ViewGroup.LayoutParams(250, 250);
-                imageLayout.width = 225;
-                imageLayout.height = 225;
-                imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgView.setPadding(12, 12, 12, 12);
-                imgView.setLayoutParams(imageLayout);
-
-            } catch (Exception e){
-                Log.i(logCode, "Failed to load image... : " + e.getMessage());
-                e.printStackTrace();
-            }
+        LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null){
+            convertView = inflater.inflate(R.layout.photo_thumbnail, parent, false);
         }
-        else
-        {
-            imgView = (ImageView) convertView;
-        }
-        return imgView;
+
+        ImageView imgView = (ImageView)convertView.findViewById(R.id.imgThumbnailView);
+        TextView txtView = (TextView)convertView.findViewById(R.id.imgThumbnailText);
+
+        Photo photo = photoList.get(position);
+        Bitmap image = photo.loadBitmap(ctx);
+        imgView.setImageBitmap(image);
+        LinearLayout.LayoutParams imageLayout = new LinearLayout.LayoutParams(250, 250);
+        imageLayout.width = 225;
+        imageLayout.height = 225;
+        imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imgView.setPadding(12, 12, 12, 12);
+        imgView.setLayoutParams(imageLayout);
+
+        txtView.setText(photo.getFilename());
+
+        return convertView;
     }
 }

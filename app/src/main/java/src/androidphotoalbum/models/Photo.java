@@ -14,36 +14,19 @@ import java.util.UUID;
 public class Photo implements java.io.Serializable {
     private static final long serialVersionUID = 676098297609856790L;
 
+    private static final String IMAGE_NAME_FORMAT = "image_%s";
     private static final String logCode = "androidPhotoAlbumLog";
 
     private String uniqueId;
-    private String filename;
     private List<TagValuePair> tagList;
 
-    public Photo(String filename){
-        this.filename = filename;
+    public Photo(){
         this.tagList = new ArrayList<TagValuePair>();
-
-        // TODO: ONLY FOR TESTING!!!
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-        tagList.add(new TagValuePair("hi", "hi"));
-
         this.uniqueId = UUID.randomUUID().toString();
     }
 
-    public void setFilename(String filename){
-        this.filename = filename;
-    }
-
     public String getFilename(){
-        return this.filename;
+        return String.format(IMAGE_NAME_FORMAT, uniqueId);
     }
 
     public void addTag(TagValuePair t){
@@ -60,13 +43,10 @@ public class Photo implements java.io.Serializable {
 
     public Bitmap loadBitmap(Context ctx){
         try{
-            InputStream inputStream = ctx.openFileInput(filename);
+            InputStream inputStream = ctx.openFileInput(getFilename());
             Bitmap img = BitmapFactory.decodeStream(inputStream);
-
-            Log.i(logCode, "Returning opened file...");
             return img;
         } catch (Exception e) {
-            Log.i(logCode, "Failed to open image: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
