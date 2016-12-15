@@ -8,4 +8,5 @@
     <string name="tags">Tags</string>
     <string name="title_activity_manage_tags">Manage Tags</string>
     <string name="title_activity_create_tag">Create Tag</string>
+    <string name="title_activity_slideshow">SlideshowActivity</string>
 </resources>

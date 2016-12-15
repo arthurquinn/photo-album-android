@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.test.ApplicationTestCase;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,6 +87,8 @@ private final String logCode = "androidPhotoAlbumLog";
                 startActivity(manageTagsIntent);
                 return true;
             case R.id.mnuSlideshow:
+                Intent slideshowIntent = new Intent(getBaseContext(), SlideshowActivity.class);
+                startActivity(slideshowIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
