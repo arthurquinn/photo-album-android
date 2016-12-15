@@ -56,7 +56,7 @@ public class CreateTagActivity extends AppCompatActivity {
                     boolean exists = false;
                     for (TagValuePair tag : tagList)
                     {
-                        if (tag.toString().equals(String.format("[Type: %s | Value: %s]", spnType.getSelectedItem().toString(), txtValue.getText().toString())))
+                        if (tag.getKey().equals(spnType.getSelectedItem().toString()) && tag.getValue().equals(txtValue.getText().toString()))
                         {
                             Toast.makeText(this, "This tag already exists.", Toast.LENGTH_LONG).show();
                             exists = true;
