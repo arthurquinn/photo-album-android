@@ -26,6 +26,7 @@ import java.util.List;
 import src.androidphotoalbum.models.Album;
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Photo;
+import src.androidphotoalbum.state.ApplicationInstance;
 
 public class MovePhotoActivity extends AppCompatActivity {
 
@@ -48,8 +49,8 @@ public class MovePhotoActivity extends AppCompatActivity {
 
         lstAlbumsMove = (ListView) findViewById(R.id.lstAlbumsMove);
 
-        List<Album> allAlbums = ((AlbumListWrapper)getIntent().getExtras().get("ALBUM_LIST_WRAPPER")).getAlbumList();
-        final Album excludeAlbum = (Album)getIntent().getExtras().get("EXCLUDE_ALBUM");
+        List<Album> allAlbums = ApplicationInstance.getInstance().getAlbumListWrapper().getAlbumList();
+        Album excludeAlbum = (Album)getIntent().getExtras().get("EXCLUDE_ALBUM");
         availableAlbums = new ArrayList<Album>(allAlbums);
         availableAlbums.remove(excludeAlbum);
 
@@ -59,10 +60,7 @@ public class MovePhotoActivity extends AppCompatActivity {
 
         // Set up image view
         try{
-            p = (Photo)getIntent().getExtras().get("PHOTO");
-
-            Log.i(photoDebugCode, "Move photo activity received: " + p.toString());
-
+            p = ApplicationInstance.getInstance().getActivePhoto();
             ImageView imgView = (ImageView)findViewById(R.id.imgViewMovePhoto);
             InputStream inputStream = getContentResolver().openInputStream(p.getUri());
             Bitmap image = BitmapFactory.decodeStream(inputStream);
@@ -79,8 +77,6 @@ public class MovePhotoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album a = (Album)availableAlbumsAdapter.getItem(position);
                 Intent moveToIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
-                moveToIntent.putExtra("PHOTO", p);
-                Log.i(photoDebugCode, "Move to photo activity is sending: " + p.toString());
                 moveToIntent.putExtra("MOVE_TO_ALBUM", a);
                 setResult(RESULT_OK, moveToIntent);
                 finish();

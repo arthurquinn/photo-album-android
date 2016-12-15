@@ -49,7 +49,6 @@ public class ImageViewGridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgView;
-        Log.i(logCode, "Getting view");
 
         if (convertView == null)
         {
@@ -59,9 +58,9 @@ public class ImageViewGridAdapter extends BaseAdapter {
             try {
                 // Get bitmap from photo object
                 Photo photo = photoList.get(position);
+                Log.i(logCode, "URI: " + photo.getUri().toString());
                 InputStream inputStream = ctx.getContentResolver().openInputStream(photo.getUri());
                 Bitmap image = BitmapFactory.decodeStream(inputStream);
-                Log.i(logCode, "Adding photo to grid... " + photo.getUri().toString());
 
                 // Create the image view
                 imgView = new ImageView(ctx);
@@ -73,8 +72,8 @@ public class ImageViewGridAdapter extends BaseAdapter {
                 imgView.setPadding(8, 8, 8, 8);
                 imgView.setLayoutParams(imageLayout);
 
-            } catch (FileNotFoundException e){
-                Log.i(logCode, "file not found");
+            } catch (Exception e){
+                Log.i(logCode, "Exception messagE: " + e.getMessage());
             }
         }
         else

@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Album;
+import src.androidphotoalbum.state.ApplicationInstance;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -44,9 +45,9 @@ public class HomeActivity extends AppCompatActivity {
 
         lstAlbums = (ListView) findViewById(R.id.lstAlbums);
 
-        albumList = new AlbumListWrapper();
-        albumList.addAlbum(new Album("Meteora"));
-        albumList.addAlbum(new Album("Minutes to Midnight"));
+
+        ApplicationInstance.instantiateTest();
+        albumList = ApplicationInstance.getInstance().getAlbumListWrapper();
 
         albumListAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_list_item_1, albumList.getAlbumList());
 
@@ -70,13 +71,12 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album album = albumListAdapter.getItem(position);
                 Intent albumPhotoViewIntent = new Intent(getBaseContext(), AlbumPhotoViewActivity.class);
-                albumPhotoViewIntent.putExtra("ACTIVE_ALBUM", album);
-                albumPhotoViewIntent.putExtra("ALBUM_LIST_WRAPPER", albumList);
+                ApplicationInstance.getInstance().setActiveAlbum(album);
                 startActivity(albumPhotoViewIntent);
             }
         });
 
-
+        Log.i(logCode, "Album List Wrapper on home activity screen: " + albumList.toString());
     }
 
     @Override
@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.mnuRename:
                 Album editAlbum = albumListAdapter.getItem(info.position);
                 Intent renameIntent = new Intent(this, AddEditAlbumActivity.class);
-                renameIntent.putExtra("ALBUM_LIST", albumList);
+                ApplicationInstance.getInstance().setActiveAlbum(editAlbum);
                 startActivityForResult(renameIntent, EDIT_ALBUM_CODE);
                 return true;
             case R.id.mnuDelete:
@@ -138,9 +138,6 @@ public class HomeActivity extends AppCompatActivity {
             if (requestCode == EDIT_ALBUM_CODE) {
                 String newName = data.getStringExtra("ALBUM_NAME");
                 String oldName = ((Album)data.getExtras().get("ALBUM")).getName();
-
-                Log.i(logCode, oldName);
-                Log.i(logCode, newName);
 
                 albumList.editAlbum(oldName, newName);
                 albumListAdapter.notifyDataSetChanged();

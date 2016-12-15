@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.test.ApplicationTestCase;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import src.androidphotoalbum.models.AlbumListWrapper;
+import src.androidphotoalbum.state.ApplicationInstance;
 
 public class AddEditAlbumActivity extends AppCompatActivity {
 
@@ -27,7 +29,7 @@ public class AddEditAlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_album);
 
-        albumList = (AlbumListWrapper)getIntent().getExtras().get("ALBUM_LIST");
+        albumList = ApplicationInstance.getInstance().getAlbumListWrapper();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

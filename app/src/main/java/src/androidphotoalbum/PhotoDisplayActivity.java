@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.test.ApplicationTestCase;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 
 import src.androidphotoalbum.models.Album;
 import src.androidphotoalbum.models.Photo;
+import src.androidphotoalbum.state.ApplicationInstance;
 
 public class PhotoDisplayActivity extends AppCompatActivity {
 private final String logCode = "androidPhotoAlbumLog";
@@ -37,8 +39,8 @@ private final String logCode = "androidPhotoAlbumLog";
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get the active album/photo
-        activeAlbum = (Album) getIntent().getExtras().get("ACTIVE_ALBUM");
-        Photo photo = (Photo) getIntent().getExtras().get("ACTIVE_PHOTO");
+        activeAlbum = ApplicationInstance.getInstance().getActiveAlbum();
+        Photo photo = ApplicationInstance.getInstance().getActivePhoto();
 
         try {
             // Set up image view

@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.test.ApplicationTestCase;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,13 +32,13 @@ import src.androidphotoalbum.adapters.ImageViewGridAdapter;
 import src.androidphotoalbum.models.Album;
 import src.androidphotoalbum.models.AlbumListWrapper;
 import src.androidphotoalbum.models.Photo;
+import src.androidphotoalbum.state.ApplicationInstance;
 
 public class AlbumPhotoViewActivity extends AppCompatActivity {
 
     private final int MOVE_PHOTO_CODE = 2;
     private static final int PHOTO_PICKER_CODE = 1;
     private static final String logCode = "androidPhotoAlbumLog";
-    private static final String photoDebug = "photoDebug";
 
     private Album activeAlbum;
     private AlbumListWrapper albumListWrapper;
@@ -49,17 +50,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i(logCode, getIntent().toString());
-        Log.i(logCode, getIntent().getExtras().toString());
-
-
-        if (activeAlbum == null)
-            activeAlbum = (Album) getIntent().getExtras().get("ACTIVE_ALBUM");
-        if (albumListWrapper == null)
-            albumListWrapper = (AlbumListWrapper) getIntent().getExtras().get("ALBUM_LIST_WRAPPER");
-
-        Log.i(logCode, "Launching Album Photo View Activity...");
-        Log.i(logCode, String.format("Opening album: %s", activeAlbum.getName()));
+        activeAlbum = ApplicationInstance.getInstance().getActiveAlbum();
+        albumListWrapper = ApplicationInstance.getInstance().getAlbumListWrapper();
 
         setTitle(String.format("%s Photos", activeAlbum.getName()));
 
@@ -69,6 +61,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         photoGridAdapter = new ImageViewGridAdapter(this, activeAlbum.getPhotoList());
+        photoGridAdapter.notifyDataSetChanged();
 
         gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
         gridPhotoView.setAdapter(photoGridAdapter);
@@ -88,6 +81,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 addPhoto();
             }
         });
+
+        Log.i(logCode, "Album photo view loading " + activeAlbum.getPhotoList().size() + " photos");
     }
 
     @Override
@@ -119,17 +114,12 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
                 p = (Photo) photoGridAdapter.getItem(info.position);
                 activeAlbum.removePhoto(p);
                 photoGridAdapter.notifyDataSetChanged();
-
-                Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
-                Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
                 return true;
             case R.id.mnuMovePhoto:
                 p = (Photo) photoGridAdapter.getItem(info.position);
-                Log.i(photoDebug, "Album photo view activity is sending: " + p.toString());
                 Intent movePhotoIntent = new Intent(this, MovePhotoActivity.class);
                 movePhotoIntent.putExtra("EXCLUDE_ALBUM", activeAlbum);
-                movePhotoIntent.putExtra("ALBUM_LIST_WRAPPER", albumListWrapper);
-                movePhotoIntent.putExtra("PHOTO", p);
+                ApplicationInstance.getInstance().setActivePhoto(p);
                 startActivityForResult(movePhotoIntent, MOVE_PHOTO_CODE);
             default:
                 return super.onContextItemSelected(item);
@@ -142,24 +132,13 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
                 activeAlbum.addPhoto(new Photo(imageUri.toString()));
-                Log.i(logCode, "Photo List Length: " + activeAlbum.getPhotoList().size());
-                Log.i(logCode, "Photo List Adapter Length: " + photoGridAdapter.getCount());
+                Log.i(logCode, "Adding photo to album " + activeAlbum.toString());
                 photoGridAdapter.notifyDataSetChanged();
             }
             else if (requestCode == MOVE_PHOTO_CODE){
-                Photo p = (Photo)data.getExtras().get("PHOTO");
+                Photo p = ApplicationInstance.getInstance().getActivePhoto();
                 Album moveToAlbum = (Album)data.getExtras().get("MOVE_TO_ALBUM");
-                Log.i(logCode, "Source size: " + activeAlbum.getPhotoList().size());
-                Log.i(logCode, "Target size: " + moveToAlbum.getPhotoList().size());
-
-                for (Photo ph : activeAlbum.getPhotoList()){
-                    Log.i(logCode, "Photo ToString: " + ph.toString());
-                }
-                Log.i(photoDebug, "Move photo activity received:  " + p.toString());
-                activeAlbum.removePhoto(p);
-                moveToAlbum.addPhoto(p);
-                Log.i(logCode, "Source size: " + activeAlbum.getPhotoList().size());
-                Log.i(logCode, "Target size: " + moveToAlbum.getPhotoList().size());
+                albumListWrapper.movePhotoToAlbum(p, activeAlbum, moveToAlbum);
                 photoGridAdapter.notifyDataSetChanged();
             }
         }
@@ -182,8 +161,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
 
     private void displayPhoto(Photo photo) {
         Intent displayPhotoIntent = new Intent(getBaseContext(), PhotoDisplayActivity.class);
-        displayPhotoIntent.putExtra("ACTIVE_ALBUM", activeAlbum);
-        displayPhotoIntent.putExtra("ACTIVE_PHOTO", photo);
+        ApplicationInstance.getInstance().setActiveAlbum(activeAlbum);
+        ApplicationInstance.getInstance().setActivePhoto(photo);
         startActivity(displayPhotoIntent);
     }
 }
