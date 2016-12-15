@@ -15,6 +15,18 @@ public class Photo implements java.io.Serializable {
     public Photo(String uriString){
         this.uriString = uriString;
         this.tagList = new ArrayList<TagValuePair>();
+
+        // TODO: ONLY FOR TESTING!!!
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+        tagList.add(new TagValuePair("hi", "hi"));
+
         this.uniqueId = UUID.randomUUID().toString();
     }
 
@@ -32,6 +44,10 @@ public class Photo implements java.io.Serializable {
 
     public void removeTag(TagValuePair t){
         this.tagList.remove(t);
+    }
+
+    public List<TagValuePair> getTags(){
+        return this.tagList;
     }
 
     @Override

@@ -15,13 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import src.androidphotoalbum.models.Album;
 import src.androidphotoalbum.models.Photo;
+import src.androidphotoalbum.models.TagValuePair;
 import src.androidphotoalbum.state.ApplicationInstance;
 
 public class PhotoDisplayActivity extends AppCompatActivity {
@@ -53,6 +56,14 @@ private final String logCode = "androidPhotoAlbumLog";
 
         } catch (FileNotFoundException e) {
             Log.i(logCode, e.getMessage());
+        }
+
+        // Load tags for photo
+        LinearLayout tagLayout = (LinearLayout)findViewById(R.id.tagsLinearLayout);
+        for (TagValuePair tag : photo.getTags()){
+            TextView tagView = new TextView(getBaseContext());
+            tagView.setText(tag.toString());
+            tagLayout.addView(tagView);
         }
     }
 

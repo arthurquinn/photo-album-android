@@ -41,6 +41,10 @@
             android:name=".MovePhotoActivity"
             android:label="@string/title_activity_move_photo"
             android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".models.ManageTagsActivity"
+            android:label="@string/title_activity_manage_tags"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
