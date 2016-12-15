@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_manage_tags"
+    android:id="@+id/content_create_tag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,28 +10,31 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="src.androidphotoalbum.ManageTagsActivity"
-    tools:showIn="@layout/activity_manage_tags">
+    tools:context="src.androidphotoalbum.CreateTagActivity"
+    tools:showIn="@layout/activity_create_tag">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:weightSum="1">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp">
 
-        <ImageView
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="126dp"
-            app:srcCompat="@android:drawable/btn_dialog"
-            android:id="@+id/imgViewManageTags"
-            android:layout_weight="0.76" />
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/txtType"
+            android:hint="Enter tag type here" />
 
-        <ListView
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="307dp"
-            android:layout_weight="0.23"
-            android:id="@+id/lstTags" />
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/txtValue"
+            android:hint="Enter tag value here" />
     </LinearLayout>
 </RelativeLayout>

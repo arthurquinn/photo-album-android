@@ -43,8 +43,12 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".models.ManageTagsActivity"
+            android:name=".ManageTagsActivity"
             android:label="@string/title_activity_manage_tags"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateTagActivity"
+            android:label="@string/title_activity_create_tag"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

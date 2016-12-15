@@ -131,8 +131,8 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK){
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
+                this.grantUriPermission(this.getPackageName(), imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 activeAlbum.addPhoto(new Photo(imageUri.toString()));
-                Log.i(logCode, "Adding photo to album " + activeAlbum.toString());
                 photoGridAdapter.notifyDataSetChanged();
             }
             else if (requestCode == MOVE_PHOTO_CODE){

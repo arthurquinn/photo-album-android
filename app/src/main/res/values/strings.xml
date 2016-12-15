@@ -6,5 +6,6 @@
     <string name="title_activity_photo_display">Photo Display</string>
     <string name="title_activity_move_photo">Move Photos</string>
     <string name="tags">Tags</string>
-    <string name="title_activity_manage_tags">ManageTagsActivity</string>
+    <string name="title_activity_manage_tags">Manage Tags</string>
+    <string name="title_activity_create_tag">Create Tag</string>
 </resources>

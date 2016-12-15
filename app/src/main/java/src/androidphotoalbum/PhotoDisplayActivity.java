@@ -1,5 +1,6 @@
 package src.androidphotoalbum;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -80,7 +81,14 @@ private final String logCode = "androidPhotoAlbumLog";
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.mnuManageTags:
+                Intent manageTagsIntent = new Intent(getBaseContext(), ManageTagsActivity.class);
+                startActivity(manageTagsIntent);
+                return true;
+            case R.id.mnuSlideshow:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
