@@ -30,9 +30,13 @@ import src.androidphotoalbum.models.TagValuePair;
 import src.androidphotoalbum.state.ApplicationInstance;
 
 public class PhotoDisplayActivity extends AppCompatActivity {
-private final String logCode = "androidPhotoAlbumLog";
 
+    private final String logCode = "androidPhotoAlbumLog";
+
+    private static final int MANAGE_TAGS_CODE = 1;
     private Album activeAlbum;
+
+    private LinearLayout tagLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ private final String logCode = "androidPhotoAlbumLog";
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tagLayout = (LinearLayout)findViewById(R.id.tagsLinearLayout);
 
         // Get the active album/photo
         activeAlbum = ApplicationInstance.getInstance().getActiveAlbum();
@@ -60,13 +66,7 @@ private final String logCode = "androidPhotoAlbumLog";
             Log.i(logCode, e.getMessage());
         }
 
-        // Load tags for photo
-        LinearLayout tagLayout = (LinearLayout)findViewById(R.id.tagsLinearLayout);
-        for (TagValuePair tag : photo.getTags()){
-            TextView tagView = new TextView(getBaseContext());
-            tagView.setText(tag.toString());
-            tagLayout.addView(tagView);
-        }
+        loadTags();
     }
 
     @Override
@@ -84,7 +84,7 @@ private final String logCode = "androidPhotoAlbumLog";
                 return true;
             case R.id.mnuManageTags:
                 Intent manageTagsIntent = new Intent(getBaseContext(), ManageTagsActivity.class);
-                startActivity(manageTagsIntent);
+                startActivityForResult(manageTagsIntent, MANAGE_TAGS_CODE);
                 return true;
             case R.id.mnuSlideshow:
                 Intent slideshowIntent = new Intent(getBaseContext(), SlideshowActivity.class);
@@ -92,6 +92,24 @@ private final String logCode = "androidPhotoAlbumLog";
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MANAGE_TAGS_CODE){
+            // Refresh after any result code
+            loadTags();
+        }
+    }
+
+    private void loadTags(){
+        // Load tags for photo
+        tagLayout.removeAllViews();
+        for (TagValuePair tag : ApplicationInstance.getInstance().getActivePhoto().getTags()){
+            TextView tagView = new TextView(getBaseContext());
+            tagView.setText(tag.toString());
+            tagLayout.addView(tagView);
         }
     }
 }

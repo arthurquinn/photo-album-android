@@ -57,7 +57,6 @@ public class MovePhotoActivity extends AppCompatActivity {
         availableAlbumsAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_list_item_1, availableAlbums);
         lstAlbumsMove.setAdapter(availableAlbumsAdapter);
 
-
         // Set up image view
         try{
             p = ApplicationInstance.getInstance().getActivePhoto();
@@ -70,7 +69,6 @@ public class MovePhotoActivity extends AppCompatActivity {
         } catch (FileNotFoundException e){
             Log.i(logCode, "file not found");
         }
-
 
         lstAlbumsMove.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

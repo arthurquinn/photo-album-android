@@ -2,6 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="src.androidphotoalbum.HomeActivity">
+    <item android:title="Search All Photos"
+        android:id="@+id/mnuSearch" />
     <item
         android:id="@+id/btnAbout"
         android:title="About"
