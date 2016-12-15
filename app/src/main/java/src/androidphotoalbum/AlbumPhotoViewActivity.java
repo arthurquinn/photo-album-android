@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,14 +28,15 @@ import java.util.List;
 
 import src.androidphotoalbum.adapters.ImageViewGridAdapter;
 import src.androidphotoalbum.models.Album;
+import src.androidphotoalbum.models.Photo;
 
 public class AlbumPhotoViewActivity extends AppCompatActivity {
 
     private static final int PHOTO_PICKER_CODE = 1;
     private static final String logCode = "androidPhotoAlbumLog";
+
     private Album activeAlbum;
 
-    private List<Bitmap> photos;
     private ImageViewGridAdapter photoGridAdapter;
     private GridView gridPhotoView;
 
@@ -53,8 +55,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        photos = new ArrayList<Bitmap>();
-        photoGridAdapter = new ImageViewGridAdapter(this, photos);
+        photoGridAdapter = new ImageViewGridAdapter(this, activeAlbum.getPhotoList());
 
         gridPhotoView = (GridView) findViewById(R.id.gridPhotoView);
         gridPhotoView.setAdapter(photoGridAdapter);
@@ -73,7 +74,7 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
             }
         });
 
-
+        registerForContextMenu(gridPhotoView);
     }
 
     @Override
@@ -82,26 +83,37 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.gridPhotoView){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+
+            getMenuInflater().inflate(R.menu.context_menu_album_photo_view, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.mnuRemovePhoto:
+
+
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
             if (requestCode == PHOTO_PICKER_CODE){
                 Uri imageUri = data.getData();
-
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
-                    photos.add(image);
-                    Log.i(logCode, "Length: " + photoGridAdapter.getCount());
-                    for (int i = 0; i < photoGridAdapter.getCount(); i++){
-                        Log.i(logCode, "Entry: " + photoGridAdapter.getItem(i).toString());
-                    }
-                    photoGridAdapter.notifyDataSetChanged();
-                } catch (FileNotFoundException e) {
-                    // TODO: Print error
-                }
+                activeAlbum.addPhoto(new Photo(imageUri.getPath()));
+                photoGridAdapter.notifyDataSetChanged();
             }
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 

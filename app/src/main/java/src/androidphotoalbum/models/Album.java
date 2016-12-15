@@ -25,6 +25,10 @@ public class Album implements java.io.Serializable {
         this.photoList.add(p);
     }
 
+    public List<Photo> getPhotoList(){
+        return this.photoList;
+    }
+
     @Override
     public String toString(){
         return this.name;
