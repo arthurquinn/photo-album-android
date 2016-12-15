@@ -136,7 +136,9 @@ public class AlbumPhotoViewActivity extends AppCompatActivity {
 
                 File imgFile = new File(imageUri.getPath());
                 activeAlbum.addPhoto(new Photo(imgFile.getName()));
+                Log.i(logCode, "Added image: name: " + imgFile.getName());
                 photoGridAdapter.notifyDataSetChanged();
+                photoGridAdapter.notifyDataSetInvalidated();
                 ApplicationInstance.getInstance().save(this);
             }
             else if (requestCode == MOVE_PHOTO_CODE){

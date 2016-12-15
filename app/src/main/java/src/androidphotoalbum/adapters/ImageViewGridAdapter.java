@@ -62,7 +62,7 @@ public class ImageViewGridAdapter extends BaseAdapter {
                 Bitmap image = photo.loadBitmap(ctx);
 
                 Log.i(logCode, "Bitmap : " + image.toString() + " loaded!");
-
+                Log.i(logCode, "Setting image at position " + position);
                 // Create the image view
                 imgView = new ImageView(ctx);
                 imgView.setImageBitmap(image);
