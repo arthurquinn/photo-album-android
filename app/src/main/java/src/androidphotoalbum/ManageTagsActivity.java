@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -105,11 +106,24 @@ public class ManageTagsActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+
+        if (v.getId() == lstTags.getId()){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            getMenuInflater().inflate(R.menu.context_menu_manage_tags, menu);
+        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.mnuRemoveTag:
+                activePhoto.removeTag(lstTagAdapter.getItem(info.position));
+                lstTagAdapter.notifyDataSetChanged();
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
